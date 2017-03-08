@@ -29,10 +29,11 @@ namespace GEX
 		Move,
 		MoveLeft,
 		MoveRight,
-		MoveUp,
+		Jump,
 		MoveDown,
+		MoveIdel,
 		FireBullet,
-		launchMissile
+		meleeAttack
 	};
 
 	enum class MissionStatus

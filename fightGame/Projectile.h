@@ -29,14 +29,13 @@ namespace GEX
 	public:
 		enum class Type
 		{
-			AlliedBullet,
-			EnemyBullet,
-			Missile
+			AnaBullet,
+			RobBullet
 		};
 
 	public:
 							Projectile(Type type);
-		bool				isGuided();
+		//bool				isGuided();
 		void				guideTowards(sf::Vector2f position);
 		unsigned int		getCategory() const override;
 		float				getMaxSpeed() const;

@@ -53,8 +53,13 @@ namespace GEX {
 	}
 
 	int Animation::getNumberOfFrames() const
-	{
+	{		
 		return _frames.size();
+	}
+
+	int Animation::getNumberOfCurrentFrame() const
+	{
+		return _currentFrame;;
 	}
 
 	Frame Animation::getFrameByNumber(int n) const

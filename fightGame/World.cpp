@@ -33,6 +33,10 @@ world class
 namespace GEX
 {
 	bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2);
+	const int BUFFER = 54;
+	const int TILE_HIGHT = 128;
+	const int NUM_ROW = 10;
+	const int NUM_COL = 10;
 
 	World::World(sf::RenderWindow& window, SoundPlayer& soundPlayer) :
 		_window(window),
@@ -79,7 +83,7 @@ namespace GEX
 	void World::adapPlayerPosition()
 	{
 		sf::FloatRect viewBounds(_worldView.getCenter() - _worldView.getSize() / 2.f, _worldView.getSize());
-		const float borderDistance = 55.f;
+		const float borderDistance = BUFFER;
 
 		sf::Vector2f position = _character->getPosition();
 		position.x = std::max(position.x, viewBounds.left + borderDistance);
@@ -87,58 +91,70 @@ namespace GEX
 		position.y = std::max(position.y, viewBounds.top + borderDistance);
 		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
 		_character->setPosition(position);
-		_character->setVelocity(0, 0);
 	}
 
 	void World::adapPlayerPositionFromTileRight(int tileNumber)
 	{
-		int x = (tileNumber % 10) * 128;
-		int y = (tileNumber / 10) * 128;
+		sf::Vector2i tilePos;
+		int x = (tileNumber % NUM_ROW) * TILE_HIGHT;
+		int y = (tileNumber / NUM_COL) * TILE_HIGHT;
 
-		sf::Vector2f position = _character->getPosition();
+		sf::Vector2f CharacterPosition = _character->getPosition();
 
-		if (position.x + 57 >= x)
+		if (CharacterPosition.x + BUFFER >= x)
 		{
-			_character->setPosition(x - 57, position.y);
-			_character->setVelocity(0, 0);
+			_character->setPosition(x - BUFFER, CharacterPosition.y);
 		}
 
 		else
-			_character->setPosition(position);
+			_character->setPosition(CharacterPosition);
 
 	}
 
 	void World::adapPlayerPositionFromTileLeft(int tileNumber)
 	{
-		int x = (tileNumber % 10) * 128;
-		int y = (tileNumber / 10) * 128;
+		int x = (tileNumber % NUM_ROW) * TILE_HIGHT;
+		int y = (tileNumber / NUM_COL) * TILE_HIGHT;
 
-		sf::Vector2f position = _character->getPosition();
+		sf::Vector2f CharacterPosition = _character->getPosition();
 
-		if (position.x - 57 <= x + 128)
+		if (CharacterPosition.x - BUFFER <= x + TILE_HIGHT)
 		{
-			_character->setPosition(x + 128 + 57, position.y);
-			_character->setVelocity(0, 0);
+			_character->setPosition(x + TILE_HIGHT + BUFFER, CharacterPosition.y);
 		}
 
 		else
-			_character->setPosition(position);
+			_character->setPosition(CharacterPosition);
 	}
 
 	void World::adapPlayerPositionFromTileBottom(int tileNumber)
 	{
-		int x = (tileNumber % 10) * 128;
-		int y = (tileNumber / 10) * 128;
+		int x = (tileNumber % NUM_ROW) * TILE_HIGHT;
+		int y = (tileNumber / NUM_COL) * TILE_HIGHT;
 
-		sf::Vector2f position = _character->getPosition();
+		sf::Vector2f CharacterPosition = _character->getPosition();
 
-		if (position.y + 57 >= y)
+		
+		if (CharacterPosition.y + BUFFER >= y)
 		{
-			_character->setPosition(position.x,  y - 57);
-			//_character->setVelocity(0, 0);
+			if (_character->isStateJump() == false)
+			{
+				_character->setPosition(CharacterPosition.x, y - BUFFER);
+				_character->setVelocity(_character->getVelocity().x, 0);
+			}
+
+			// set the buffer -1 to make sure the character jump and do not get stuck
+			if (_character->isStateJump() == true && CharacterPosition.y + BUFFER - 1 >= y)
+			{
+				_character->setState(_character->Idle);
+				_character->setPosition(CharacterPosition.x, y - BUFFER);
+				_character->setVelocity(_character->getVelocity().x, 0);
+			}
+			
 		}
 		else
-			_character->setPosition(position);
+			_character->setPosition(CharacterPosition);
+		std::cerr << "Vy: " << _character->getVelocity().y << std::endl;
 	}
 
 	CommandeQueue & World::getCommandQueue()
@@ -230,10 +246,10 @@ namespace GEX
 	{
 
 		int tileOn = _map->getTileNumber(_character->getPosition());
-		std::cout << "The tile is " << tileOn << std::endl;
+		//std::cout << "The tile is " << tileOn << std::endl;
 
 		int tileToTheRight = _map->getTileOnRight(_character->getPosition());
-		std::cout << "Right tile is " << tileToTheRight << std::endl;
+		//std::cout << "Right tile is " << tileToTheRight << std::endl;
 
 		int tileToTheLeft = _map->getTileOnLeft(_character->getPosition());
 		int tileToTheBottom = _map->getTileOnBottom(_character->getPosition());

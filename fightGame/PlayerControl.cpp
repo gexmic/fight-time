@@ -22,13 +22,13 @@ Player control class
 
 namespace GEX
 {
-	struct AircraftMover
+	struct PlayerMover
 	{
-		AircraftMover(float vx, float vy) : velocity(vx, vy)
+		PlayerMover(float vx, float vy) : velocity(vx, vy)
 		{}
-		void operator() (Character& aircraft, sf::Time dt) const
+		void operator() (Character& character, sf::Time dt) const
 		{
-			aircraft.move(velocity.x, velocity.y);
+			character.move(velocity.x, velocity.y);
 		}
 		sf::Vector2f velocity;
 	};
@@ -45,7 +45,16 @@ namespace GEX
 	{
 		if (sf::Joystick::isButtonPressed(1, 0))
 		{
-			commands.push(_actionBindings[sf::Joystick::isButtonPressed, Action::MoveUp]);
+			commands.push(_actionBindings[sf::Joystick::isButtonPressed, Action::Jump]);
+		}
+
+		if (sf::Joystick::isButtonPressed(1, 1))
+		{
+			commands.push(_actionBindings[sf::Joystick::isButtonPressed, Action::FireBullet]);
+		}
+		if (sf::Joystick::isButtonPressed(1, 2))
+		{
+			commands.push(_actionBindings[sf::Joystick::isButtonPressed, Action::meleeAttack]);
 		}
 		
 	}
@@ -63,11 +72,13 @@ namespace GEX
 				{
 					commands.push(_actionBindings[sf::Joystick::Axis::X, Action::MoveLeft]);
 				}
-				if (speed.x > 15.f)
+				else if (speed.x > 15.f)
 				{
 					commands.push(_actionBindings[sf::Joystick::Axis::X, Action::MoveRight]);
 				}
-
+				
+				else 
+					commands.push(_actionBindings[sf::Joystick::Axis::X, Action::MoveIdel]);
 				
 
 		
@@ -79,8 +90,7 @@ namespace GEX
 
 		
 
-		_keyBindings[sf::Joystick::X] = Action::MoveLeft;
-		
+		//_keyBindings[sf::Joystick::X] = Action::MoveLeft;
 		//_keyBindings[sf::Joystick::Y] = Action::MoveUp;
 		/*_keyBindings[sf::Keyboard::Left]	= Action::MoveLeft;
 		_keyBindings[sf::Keyboard::Right]	= Action::MoveRight;
@@ -92,10 +102,12 @@ namespace GEX
 	{
 		const float playerSpeed = 200.f;
 
-		_actionBindings[Action::MoveLeft].action		= derivedAction<Character>(AircraftMover(-playerSpeed, 0.f));
-		_actionBindings[Action::MoveRight].action		= derivedAction<Character>(AircraftMover(playerSpeed, 0.f));
-		_actionBindings[Action::MoveUp].action			= derivedAction<Character>(AircraftMover(0, -1000.f));
-		
+		_actionBindings[Action::MoveLeft].action		= derivedAction<Character>(PlayerMover(-playerSpeed, 0.f));
+		_actionBindings[Action::MoveRight].action		= derivedAction<Character>(PlayerMover(playerSpeed, 0.f));
+		_actionBindings[Action::MoveIdel].action		= derivedAction<Character>(PlayerMover(0, 0));
+		_actionBindings[Action::Jump].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.jump(); });
+		_actionBindings[Action::FireBullet].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.fire(); });
+		_actionBindings[Action::meleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
 		/*_actionBindings[Action::MoveLeft].action = derivedAction<Character>(AircraftMover(-playerSpeed, 0.f));
 		_actionBindings[Action::MoveRight].action = derivedAction<Character>(AircraftMover(playerSpeed, 0.f));
 		_actionBindings[Action::MoveUp].action = derivedAction<Character>(AircraftMover(0.f, -playerSpeed));
@@ -117,9 +129,8 @@ namespace GEX
 		case Action::Move:
 		case Action::MoveLeft:
 		case Action::MoveRight:
-			return true;
-		case Action::MoveUp:
-			return false;
+		case Action::MoveIdel:
+			return true;			
 		default:
 			return false;
 		}

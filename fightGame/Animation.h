@@ -39,6 +39,7 @@ namespace GEX
 		void						start();
 
 		int							getNumberOfFrames() const;
+		int							getNumberOfCurrentFrame() const;
 		Frame						getFrameByNumber(int n) const;
 		Frame						getCurrentFrame() const;
 		Frame						update(sf::Time dt);

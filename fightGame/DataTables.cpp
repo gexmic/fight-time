@@ -31,7 +31,7 @@ namespace GEX
 
 		data[Character::Type::Ana].hitpoint = 15;
 		data[Character::Type::Ana].speed = 150.f;
-		data[Character::Type::Ana].fireInterval = sf::seconds(2);
+		data[Character::Type::Ana].fireInterval = sf::seconds(4);
 		data[Character::Type::Ana].texture = TextureID::AnaEntity;
 		data[Character::Type::Ana].location = sf::IntRect(613, 154, 160, 136);
 
@@ -135,18 +135,13 @@ namespace GEX
 	{
 		std::map<Projectile::Type, ProjectileDate> data;
 
-		data[Projectile::Type::AlliedBullet].damege		= 10;
-		data[Projectile::Type::AlliedBullet].speed		= 300.f;
-		data[Projectile::Type::AlliedBullet].location   = sf::IntRect(178, 64, 3, 14);
+		data[Projectile::Type::AnaBullet].damege		= 10;
+		data[Projectile::Type::AnaBullet].speed			= 300.f;
+		data[Projectile::Type::AnaBullet].location		 = sf::IntRect(178, 64, 3, 14);
 
-		data[Projectile::Type::EnemyBullet].damege		= 10;
-		data[Projectile::Type::EnemyBullet].speed		= 300.f;
-		data[Projectile::Type::EnemyBullet].location    = sf::IntRect(178, 64, 3, 14);
-
-		data[Projectile::Type::Missile].damege			= 200;
-		data[Projectile::Type::Missile].speed			= 300.f;
-		data[Projectile::Type::Missile].approachRate    = 1000.f;
-		data[Projectile::Type::Missile].location        = sf::IntRect(160, 64, 15, 32);
+		data[Projectile::Type::RobBullet].damege		= 10;
+		data[Projectile::Type::RobBullet].speed		= 300.f;
+		data[Projectile::Type::RobBullet].location    = sf::IntRect(178, 64, 3, 14);
 
 		return data;
 	}
