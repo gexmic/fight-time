@@ -69,7 +69,8 @@ namespace GEX
 
 
 		_sceneGraph.update(deltaTime, _commandQueue);
-		adapPlayerPosition();
+		adapPlayerPosition(_characterOne);
+		adapPlayerPosition(_characterTwo);
 	}
 
 
@@ -80,81 +81,86 @@ namespace GEX
 
 	}
 
-	void World::adapPlayerPosition()
+	void World::adapPlayerPosition(Character* character)
 	{
 		sf::FloatRect viewBounds(_worldView.getCenter() - _worldView.getSize() / 2.f, _worldView.getSize());
 		const float borderDistance = BUFFER;
 
-		sf::Vector2f position = _character->getPosition();
-		position.x = std::max(position.x, viewBounds.left + borderDistance);
-		position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-		position.y = std::max(position.y, viewBounds.top + borderDistance);
-		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-		_character->setPosition(position);
+		// adapte position for player
+		
+		sf::Vector2f playerPosition = character->getPosition();
+		playerPosition.x = std::max(playerPosition.x, viewBounds.left + borderDistance);
+		playerPosition.x = std::min(playerPosition.x, viewBounds.left + viewBounds.width - borderDistance);
+		playerPosition.y = std::max(playerPosition.y, viewBounds.top + borderDistance);
+		playerPosition.y = std::min(playerPosition.y, viewBounds.top + viewBounds.height - borderDistance);
+		character->setPosition(playerPosition);	
 	}
 
-	void World::adapPlayerPositionFromTileRight(int tileNumber)
+	void World::adapPlayerPositionFromTileRight(int tileNumber, Character* character)
 	{
 		sf::Vector2i tilePos;
-		int x = (tileNumber % NUM_ROW) * TILE_HIGHT;
-		int y = (tileNumber / NUM_COL) * TILE_HIGHT;
+		tilePos.x = (tileNumber % NUM_ROW) * TILE_HIGHT;
+		tilePos.y = (tileNumber / NUM_COL) * TILE_HIGHT;
 
-		sf::Vector2f CharacterPosition = _character->getPosition();
+		sf::Vector2f CharacterPosition = character->getPosition();
 
-		if (CharacterPosition.x + BUFFER >= x)
+		// adapt position for player 
+		if (CharacterPosition.x + BUFFER >= tilePos.x)
 		{
-			_character->setPosition(x - BUFFER, CharacterPosition.y);
+			character->setPosition(tilePos.x - BUFFER, CharacterPosition.y);
 		}
 
 		else
-			_character->setPosition(CharacterPosition);
-
+			character->setPosition(CharacterPosition);
 	}
 
-	void World::adapPlayerPositionFromTileLeft(int tileNumber)
+	void World::adapPlayerPositionFromTileLeft(int tileNumber, Character* character)
 	{
-		int x = (tileNumber % NUM_ROW) * TILE_HIGHT;
-		int y = (tileNumber / NUM_COL) * TILE_HIGHT;
+		sf::Vector2i tilePos;
+		tilePos.x = (tileNumber % NUM_ROW) * TILE_HIGHT;
+		tilePos.y = (tileNumber / NUM_COL) * TILE_HIGHT;
 
-		sf::Vector2f CharacterPosition = _character->getPosition();
+		// adapte position for player
+		sf::Vector2f CharacterPosition = character->getPosition();
 
-		if (CharacterPosition.x - BUFFER <= x + TILE_HIGHT)
+		if (CharacterPosition.x - BUFFER <= tilePos.x + TILE_HIGHT)
 		{
-			_character->setPosition(x + TILE_HIGHT + BUFFER, CharacterPosition.y);
+			character->setPosition(tilePos.x + TILE_HIGHT + BUFFER, CharacterPosition.y);
 		}
 
 		else
-			_character->setPosition(CharacterPosition);
+			character->setPosition(CharacterPosition);
 	}
 
-	void World::adapPlayerPositionFromTileBottom(int tileNumber)
+	void World::adapPlayerPositionFromTileBottom(int tileNumber, Character* character)
 	{
-		int x = (tileNumber % NUM_ROW) * TILE_HIGHT;
-		int y = (tileNumber / NUM_COL) * TILE_HIGHT;
+		sf::Vector2i tilePos;
+		tilePos.x = (tileNumber % NUM_ROW) * TILE_HIGHT;
+		tilePos.y = (tileNumber / NUM_COL) * TILE_HIGHT;
 
-		sf::Vector2f CharacterPosition = _character->getPosition();
+		// adapte position for player one
+		sf::Vector2f CharacterPosition = character->getPosition();
 
 		
-		if (CharacterPosition.y + BUFFER >= y)
+		if (CharacterPosition.y + BUFFER >= tilePos.y)
 		{
-			if (_character->isStateJump() == false)
+			if (character->isStateJump() == false)
 			{
-				_character->setPosition(CharacterPosition.x, y - BUFFER);
-				_character->setVelocity(_character->getVelocity().x, 0);
+				character->setPosition(CharacterPosition.x, tilePos.y - BUFFER);
+				character->setVelocity(character->getVelocity().x, 0);
 			}
 
 			// set the buffer -1 to make sure the character jump and do not get stuck
-			if (_character->isStateJump() == true && CharacterPosition.y + BUFFER - 1 >= y)
+			if (character->isStateJump() == true && CharacterPosition.y + BUFFER - 1 >= tilePos.y)
 			{
-				_character->setState(_character->Idle);
-				_character->setPosition(CharacterPosition.x, y - BUFFER);
-				_character->setVelocity(_character->getVelocity().x, 0);
+				character->setState(character->Idle);
+				character->setPosition(CharacterPosition.x, tilePos.y - BUFFER);
+				character->setVelocity(character->getVelocity().x, 0);
 			}
 			
 		}
 		else
-			_character->setPosition(CharacterPosition);
-		std::cerr << "Vy: " << _character->getVelocity().y << std::endl;
+			character->setPosition(CharacterPosition);		
 	}
 
 	CommandeQueue & World::getCommandQueue()
@@ -191,10 +197,15 @@ namespace GEX
 
 
 		// add player to the world
-		std::unique_ptr<Character> ana(new Character());
-		_character = ana.get();
-		_character->setPosition(300, 300);
+		std::unique_ptr<Character> ana(new Character(_characterOne->Ana, Category::Type::PlayerCharacterOne));
+		_characterOne = ana.get();
+		_characterOne->setPosition(300, 300);
 		_sceneLayers[Ground]->attachChild(std::move(ana));
+
+		std::unique_ptr<Character> anaTwo(new Character(_characterTwo->Ana, Category::Type::PlayerCharacterTwo));
+		_characterTwo = anaTwo.get();
+		_characterTwo->setPosition(800, 300);
+		_sceneLayers[Ground]->attachChild(std::move(anaTwo));
 
 
 		// Add the background sprite to the scene
@@ -244,81 +255,47 @@ namespace GEX
 
 	void World::handleCollisions()
 	{
+		// for player one handle collision for tile
+		int tileOnPlayerOne = _map->getTileNumber(_characterOne->getPosition());
+		int tileToTheRightPlayerOne = _map->getTileOnRight(_characterOne->getPosition());
+		int tileToTheLeftPlayerOne = _map->getTileOnLeft(_characterOne->getPosition());
+		int tileToTheBottomPlayerOne = _map->getTileOnBottom(_characterOne->getPosition());
 
-		int tileOn = _map->getTileNumber(_character->getPosition());
-		//std::cout << "The tile is " << tileOn << std::endl;
-
-		int tileToTheRight = _map->getTileOnRight(_character->getPosition());
-		//std::cout << "Right tile is " << tileToTheRight << std::endl;
-
-		int tileToTheLeft = _map->getTileOnLeft(_character->getPosition());
-		int tileToTheBottom = _map->getTileOnBottom(_character->getPosition());
-
-
-		if (_map->isItSolid(tileToTheRight) && _character->isMovingRight() == true)
-		{
-			
-			adapPlayerPositionFromTileRight(tileToTheRight);
+		if (_map->isItSolid(tileToTheRightPlayerOne) && _characterOne->isMovingRight() == true)
+		{			
+			adapPlayerPositionFromTileRight(tileToTheRightPlayerOne, _characterOne);
 		}
 
-		else if (_map->isItSolid(tileToTheLeft) && _character->isMovingLeft() == true)
+		else if (_map->isItSolid(tileToTheLeftPlayerOne) && _characterOne->isMovingLeft() == true)
 		{
 			
-				adapPlayerPositionFromTileLeft(tileToTheLeft);
+				adapPlayerPositionFromTileLeft(tileToTheLeftPlayerOne, _characterOne);
 		}
 
-		if(_map->isItSolid(tileToTheBottom))
-		adapPlayerPositionFromTileBottom(tileToTheBottom);
+		if(_map->isItSolid(tileToTheBottomPlayerOne))
+		adapPlayerPositionFromTileBottom(tileToTheBottomPlayerOne, _characterOne);
 
 
+		// handle collision for player two
+		int tileOnPlayerTwo = _map->getTileNumber(_characterTwo->getPosition());
+		int tileToTheRightPlayerTwo = _map->getTileOnRight(_characterTwo->getPosition());
+		int tileToTheLeftPlayerTwo = _map->getTileOnLeft(_characterTwo->getPosition());
+		int tileToTheBottomPlayerTwo = _map->getTileOnBottom(_characterTwo->getPosition());
 
+		if (_map->isItSolid(tileToTheRightPlayerTwo) && _characterTwo->isMovingRight() == true)
+		{
+			adapPlayerPositionFromTileRight(tileToTheRightPlayerTwo, _characterTwo);
+		}
 
+		else if (_map->isItSolid(tileToTheLeftPlayerTwo) && _characterTwo->isMovingLeft() == true)
+		{
 
-		// build a list of all pair of colloding scenenode all pair
-		//std::set<SceneNode::Pair> collisionPairs;
-		//_sceneGraph.checkSceneCollision(_sceneGraph, collisionPairs);
+			adapPlayerPositionFromTileLeft(tileToTheLeftPlayerTwo, _characterTwo);
+		}
 
-		//// for each collision do someting
-		//for (auto pair : collisionPairs)
-		//{
-		//	if (matchesCategories(pair, Category::PlayerAircraft, Category::EnnemyAircraft))
-		//	{
-		//		auto& player = static_cast<Airplaine&> (*pair.first);
-		//		auto& enemy = static_cast<Airplaine&>(*pair.second);
+		if (_map->isItSolid(tileToTheBottomPlayerTwo))
+			adapPlayerPositionFromTileBottom(tileToTheBottomPlayerTwo, _characterTwo);
 
-		//		player.damage(enemy.getHitPoint());
-		//		enemy.destroy();
-		//	}
-
-		//	if (matchesCategories(pair, Category::EnnemyAircraft, Category::AlliedProjectile) ||
-		//		matchesCategories(pair, Category::PlayerAircraft, Category::EnemyProjectile))
-		//	{
-		//		auto& Airplaines = static_cast<Airplaine&> (*pair.first);
-		//		auto& projectile = static_cast<Projectile&>(*pair.second);
-
-		//		Airplaines.damage(projectile.getHitPoint());
-		//		projectile.destroy();
-		//	}
-
-		//	/*if (matchesCategories(pair, Category::PlayerAircraft, Category::EnemyProjectile))
-		//	{
-		//		auto& playerAirplaine = static_cast<Airplaine&> (*pair.first);
-		//		auto& projectile = static_cast<Projectile&>(*pair.second);
-
-		//		playerAirplaine.damage(projectile.getHitPoint());
-		//		projectile.destroy();
-		//	}*/
-		//	// to do
-		//	if (matchesCategories(pair, Category::PlayerAircraft, Category::Pickup))
-		//	{
-		//		auto& playerAirplaine = static_cast<Airplaine&> (*pair.first);
-		//		auto& pickup = static_cast<Pickup&>(*pair.second);
-
-		//		pickup.apply(playerAirplaine);
-		//		pickup.destroy();
-		//		playerAirplaine.playLocalSound(_commandQueue, SoundEffectID::CollectPickup);
-		//	}
-		//}
 	}
 
 	void World::destroyEntitieOurSideView()

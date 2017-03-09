@@ -26,7 +26,7 @@ namespace GEX
 			None = 0,			 // bit fied operator
 			SceneGroundLayer		= 1 << 0,
 			PlayerCharacterOne		= 1 << 1,
-			playerCharacterTwo		= 1 << 2,
+			PlayerCharacterTwo		= 1 << 2,
 			EnnemyCharacter			= 1 << 3,
 			AlliedProjectile		= 1 << 4,
 			EnemyProjectile			= 1 << 5,

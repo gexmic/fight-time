@@ -62,7 +62,8 @@ namespace GEX
 		//std::map<sf::Event::JoystickMoveEvent, Action>		_keyBindings;
 		std::map<sf::Joystick::Axis, Action>		_keyBindings;
 		//std::map<sf::Keyboard::Key, Action>		_keyBindings;
-		std::map<Action, Command>				_actionBindings;
+		std::map<Action, Command>				_actionBindingsCharacterOne;
+		std::map<Action, Command>				_actionBindingsCharacterTwo;
 		MissionStatus							_missionStatus;
 	};
 

@@ -43,43 +43,75 @@ namespace GEX
 
 	void PlayerControl::handleEvent(const sf::Event& event, CommandeQueue& commands)
 	{
+		// for character One
 		if (sf::Joystick::isButtonPressed(1, 0))
 		{
-			commands.push(_actionBindings[sf::Joystick::isButtonPressed, Action::Jump]);
+			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::Jump]);
 		}
 
 		if (sf::Joystick::isButtonPressed(1, 1))
 		{
-			commands.push(_actionBindings[sf::Joystick::isButtonPressed, Action::FireBullet]);
+			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::FireBullet]);
 		}
 		if (sf::Joystick::isButtonPressed(1, 2))
 		{
-			commands.push(_actionBindings[sf::Joystick::isButtonPressed, Action::meleeAttack]);
+			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::meleeAttack]);
+		}
+
+		//////////////////////////////////////////
+
+		// for character Two
+
+		if (sf::Joystick::isButtonPressed(0, 0))
+		{
+			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::Jump]);
+		}
+
+		if (sf::Joystick::isButtonPressed(0, 1))
+		{
+			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::FireBullet]);
+		}
+		if (sf::Joystick::isButtonPressed(0, 2))
+		{
+			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::meleeAttack]);
 		}
 		
 	}
 
 	void PlayerControl::handleRealTimeInput(CommandeQueue& commands)
 	{
-		for (auto pair : _keyBindings)
-		{
-			if (sf::Joystick::Axis(pair.first) && isRealTimeAction(pair.second))
-				commands.push(_actionBindings[pair.second]);
-		}
-			sf::Vector2f speed = sf::Vector2f(sf::Joystick::getAxisPosition(1, sf::Joystick::X), 0); // move just on the x axis
+		// for character One
 		
-				if (speed.x < -15.f  )
+			sf::Vector2f speedPlayerOne = sf::Vector2f(sf::Joystick::getAxisPosition(1, sf::Joystick::X), 0); // move just on the x axis
+		
+				if (speedPlayerOne.x < -15.f  )
 				{
-					commands.push(_actionBindings[sf::Joystick::Axis::X, Action::MoveLeft]);
+					commands.push(_actionBindingsCharacterOne[sf::Joystick::Axis::X, Action::MoveLeft]);
 				}
-				else if (speed.x > 15.f)
+				else if (speedPlayerOne.x > 15.f)
 				{
-					commands.push(_actionBindings[sf::Joystick::Axis::X, Action::MoveRight]);
+					commands.push(_actionBindingsCharacterOne[sf::Joystick::Axis::X, Action::MoveRight]);
 				}
 				
 				else 
-					commands.push(_actionBindings[sf::Joystick::Axis::X, Action::MoveIdel]);
+					commands.push(_actionBindingsCharacterOne[sf::Joystick::Axis::X, Action::MoveIdel]);
+		///////////////////////////////////////////////
+	
+				//for Character Two
 				
+				sf::Vector2f speedPlayerTwo = sf::Vector2f(sf::Joystick::getAxisPosition(0, sf::Joystick::X), 0);
+				if (speedPlayerTwo.x < -15.f)
+				{
+					commands.push(_actionBindingsCharacterTwo[sf::Joystick::Axis::X, Action::MoveLeft]);
+				}
+				else if (speedPlayerTwo.x > 15.f)
+				{
+					commands.push(_actionBindingsCharacterTwo[sf::Joystick::Axis::X, Action::MoveRight]);
+				}
+
+				else
+					commands.push(_actionBindingsCharacterTwo[sf::Joystick::Axis::X, Action::MoveIdel]);
+
 
 		
 		
@@ -87,9 +119,6 @@ namespace GEX
 
 	void PlayerControl::initializaKeyBindings()
 	{
-
-		
-
 		//_keyBindings[sf::Joystick::X] = Action::MoveLeft;
 		//_keyBindings[sf::Joystick::Y] = Action::MoveUp;
 		/*_keyBindings[sf::Keyboard::Left]	= Action::MoveLeft;
@@ -100,23 +129,38 @@ namespace GEX
 
 	void PlayerControl::initializaActionBindings()
 	{
+		// for character One
 		const float playerSpeed = 200.f;
 
-		_actionBindings[Action::MoveLeft].action		= derivedAction<Character>(PlayerMover(-playerSpeed, 0.f));
-		_actionBindings[Action::MoveRight].action		= derivedAction<Character>(PlayerMover(playerSpeed, 0.f));
-		_actionBindings[Action::MoveIdel].action		= derivedAction<Character>(PlayerMover(0, 0));
-		_actionBindings[Action::Jump].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.jump(); });
-		_actionBindings[Action::FireBullet].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.fire(); });
-		_actionBindings[Action::meleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
-		/*_actionBindings[Action::MoveLeft].action = derivedAction<Character>(AircraftMover(-playerSpeed, 0.f));
-		_actionBindings[Action::MoveRight].action = derivedAction<Character>(AircraftMover(playerSpeed, 0.f));
-		_actionBindings[Action::MoveUp].action = derivedAction<Character>(AircraftMover(0.f, -playerSpeed));
-		_actionBindings[Action::MoveDown].action = derivedAction<Character>(AircraftMover(0.f, playerSpeed));*/
+		_actionBindingsCharacterOne[Action::MoveLeft].action		= derivedAction<Character>(PlayerMover(-playerSpeed, 0.f));
+		_actionBindingsCharacterOne[Action::MoveRight].action		= derivedAction<Character>(PlayerMover(playerSpeed, 0.f));
+		_actionBindingsCharacterOne[Action::MoveIdel].action		= derivedAction<Character>(PlayerMover(0, 0));
+		_actionBindingsCharacterOne[Action::Jump].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.jump(); });
+		_actionBindingsCharacterOne[Action::FireBullet].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.fire(); });
+		_actionBindingsCharacterOne[Action::meleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
 
 
-		for (auto& pair : _actionBindings)
+
+		for (auto& pair : _actionBindingsCharacterOne)
 		{
 			pair.second.category = Category::PlayerCharacterOne;
+		}
+		///////////////////////////////////////
+
+		// for character Two
+
+		_actionBindingsCharacterTwo[Action::MoveLeft].action		= derivedAction<Character>(PlayerMover(-playerSpeed, 0.f));
+		_actionBindingsCharacterTwo[Action::MoveRight].action		= derivedAction<Character>(PlayerMover(playerSpeed, 0.f));
+		_actionBindingsCharacterTwo[Action::MoveIdel].action		= derivedAction<Character>(PlayerMover(0, 0));
+		_actionBindingsCharacterTwo[Action::Jump].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.jump(); });
+		_actionBindingsCharacterTwo[Action::FireBullet].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.fire(); });
+		_actionBindingsCharacterTwo[Action::meleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
+
+
+
+		for (auto& pair : _actionBindingsCharacterTwo)
+		{
+			pair.second.category = Category::PlayerCharacterTwo;
 		}
 	
 	}

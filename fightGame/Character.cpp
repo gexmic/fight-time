@@ -15,7 +15,7 @@ namespace GEX
 	const int WIDTH = 151;
 	const float GRAVITY = 8;
 
-	Character::Character(Type type) :
+	Character::Character(Type type, Category::Type category) :
 		Entity(),
 		_type(type),
 		_sprite(TextureHolder::getInstance().get(table.at(type).texture), sf::IntRect(0,0,HEIGHT, WIDTH)),
@@ -23,7 +23,8 @@ namespace GEX
 		_moveRight(false),
 		_isFiring(false),
 		_fireRateLevel(1),
-		_fireCountdown(sf::Time::Zero)
+		_fireCountdown(sf::Time::Zero),
+		_category(category)
 		
 	{
 		centerOrigin(_sprite);
@@ -61,7 +62,7 @@ namespace GEX
 
 	unsigned int Character::getCategory() const
 	{
-		return Category::PlayerCharacterOne;
+		return _category;
 	}
 
 	float Character::getMaxSpeed() const
@@ -107,9 +108,11 @@ namespace GEX
 					this->setVelocity(x, getVelocity().y);
 				}
 				if (_state == State::Run)
+				{
 					this->setVelocity(x, GRAVITY);
+					this->accelerate(0, GRAVITY);
+				}				
 			}
-
 		}
 
 		else if (x > 15)
@@ -135,6 +138,12 @@ namespace GEX
 				else if (_state == State::Jump)
 				{
 					this->setVelocity(x, getVelocity().y);
+				}
+
+				if (_state == State::Run)
+				{
+					this->setVelocity(x, GRAVITY);
+					this->accelerate(0, GRAVITY);
 				}
 			}
 

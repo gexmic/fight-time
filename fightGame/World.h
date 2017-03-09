@@ -58,10 +58,10 @@ namespace GEX
 
 		void								update(sf::Time deltaTime);
 		void								draw();
-		void								adapPlayerPosition();
-		void								adapPlayerPositionFromTileRight(int tileNumber);
-		void								adapPlayerPositionFromTileLeft(int tileNumber);
-		void								adapPlayerPositionFromTileBottom(int tileNumber);
+		void								adapPlayerPosition(Character* character);
+		void								adapPlayerPositionFromTileRight(int tileNumber, Character* character);
+		void								adapPlayerPositionFromTileLeft(int tileNumbe, Character* characterr);
+		void								adapPlayerPositionFromTileBottom(int tileNumber, Character* character);
 		CommandeQueue&						getCommandQueue();
 
 
@@ -93,7 +93,8 @@ namespace GEX
 		CommandeQueue							_commandQueue;
 		SoundPlayer&							_soundPlayer;
 		TileMap*   								_map;
-		Character*								_character;
+		Character*								_characterOne;
+		Character*								_characterTwo;
 		sf::FloatRect							_worldBounds;
 	};
 }

@@ -5,6 +5,7 @@
 #include "Command.h"
 #include "CommandeQueue.h"
 #include "Animation.h"
+#include "Category.h"
 
 namespace GEX
 {
@@ -36,7 +37,7 @@ namespace GEX
 		};
 
 	public:
-		Character(Type type = Type::Ana);
+		Character(Type type, Category::Type category);
 
 		unsigned int									getCategory() const override;
 		float											getMaxSpeed() const;
@@ -67,6 +68,7 @@ namespace GEX
 		sf::Time										_fireCountdown;
 		Command											_fireCommand;
 		std::size_t										_fireRateLevel;
+		Category::Type									_category;
 
 		std::map<State, std::unique_ptr<Animation>>		_animations;
 	};
