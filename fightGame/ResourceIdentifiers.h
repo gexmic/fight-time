@@ -28,8 +28,7 @@ namespace GEX
 		MenuScreen,		
 		Particale,
 		AnaEntity,
-		DessertTileOne,
-		DessertTileTwo
+		Bullet
 		
 	};
 
@@ -39,12 +38,9 @@ namespace GEX
 	};
 
 	enum class SoundEffectID {
-		AlliedGunFire,
-		Botton,
-		CollectPickup,
-		EnemyGunFire,
-		Explosion1,
-		Explosion2,
-		LauchMissile
+		AnaGunFire,
+		AnaJump,
+		Run,
+		AnaSword
 	};
 }

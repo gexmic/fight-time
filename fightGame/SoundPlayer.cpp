@@ -43,13 +43,10 @@ namespace GEX
 
 	SoundPlayer::SoundPlayer()
 	{
-		SoundBufferHolder::getInstance().load(SoundEffectID::AlliedGunFire,	"../Media/Sound/AlliedGunfire.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::EnemyGunFire,	"../Media/Sound/EnemyGunfire.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::Explosion1,	"../Media/Sound/Explosion1.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::Explosion2,	"../Media/Sound/Explosion2.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::LauchMissile,	"../Media/Sound/LaunchMissile.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::CollectPickup,	"../Media/Sound/CollectPickup.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::Botton,		"../Media/Sound/Button.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::AnaGunFire,	"../Media/Sound/anaGunFire.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::AnaJump,       "../Media/Sound/anaJump.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::Run,           "../Media/Sound/run.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::AnaSword,      "../Media/Sound/anaSword.wav");
 
 		// Listener points towards the screen (default in SFML)
 		sf::Listener::setDirection(0.f, 0.f, -1.f);
@@ -74,6 +71,32 @@ namespace GEX
 		sound.setMinDistance(MinDistance3D);
 
 		sound.play();
+	}
+
+	void SoundPlayer::playLoop(SoundEffectID effectid, sf::Vector2f position)
+	{
+		sf::Sound soundEffect(SoundBufferHolder::getInstance().get(effectid));
+		_sounds.push_back(soundEffect);
+
+		sf::Sound& sound = _sounds.back();
+
+		//sound.setBuffer(SoundBufferHolder::getInstance().get(effectid));
+		sound.setVolume(Volume);
+		sound.setPosition(position.x, -position.y, 0.f);
+		sound.setAttenuation(Attenuation);
+		sound.setMinDistance(MinDistance3D);
+		sound.setLoop(true);
+
+		sound.play();
+	}
+
+	void SoundPlayer::stop(SoundEffectID effectid)
+	{
+		sf::Sound soundEffect(SoundBufferHolder::getInstance().get(effectid));
+		
+
+		sf::Sound& sound = _sounds.back();
+		sound.stop();
 	}
 
 	void SoundPlayer::removeStoppedSounds()

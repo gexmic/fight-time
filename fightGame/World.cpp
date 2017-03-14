@@ -205,6 +205,7 @@ namespace GEX
 		std::unique_ptr<Character> anaTwo(new Character(_characterTwo->Ana, Category::Type::PlayerCharacterTwo));
 		_characterTwo = anaTwo.get();
 		_characterTwo->setPosition(800, 300);
+		_characterTwo->setScale({ -1, 1 });
 		_sceneLayers[Ground]->attachChild(std::move(anaTwo));
 
 
@@ -231,10 +232,10 @@ namespace GEX
 		//_playerAircraft->setVelocity(0.f, _scrollSpeed);
 		//_sceneLayers[Air]->attachChild(std::move(leader));
 
-		//// add SoundNode
+		// add SoundNode
 
-		//std::unique_ptr<SoundNode> soundEffectNode(new SoundNode(_soundPlayer));
-		//_sceneGraph.attachChild(std::move(soundEffectNode));
+		std::unique_ptr<SoundNode> soundEffectNode(new SoundNode(_soundPlayer));
+		_sceneGraph.attachChild(std::move(soundEffectNode));
 
 	}
 

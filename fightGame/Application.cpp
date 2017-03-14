@@ -49,8 +49,7 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::MapDessertBackground,  "../Media/Textures/MapDessertBG.png");
 		TextureHolder::getInstance().load(TextureID::MapDessertEntety,      "../Media/Textures/MapDessertEntety.png");
 		TextureHolder::getInstance().load(TextureID::AnaEntity,				"../Media/Textures/AnaMouvement.png");
-		TextureHolder::getInstance().load(TextureID::DessertTileOne,        "../Media/Textures/1.png");
-		TextureHolder::getInstance().load(TextureID::DessertTileTwo,		"../Media/Textures/2.png");
+		TextureHolder::getInstance().load(TextureID::Bullet,		        "../Media/Textures/Bullet.png");
 		
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));

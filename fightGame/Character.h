@@ -6,6 +6,7 @@
 #include "CommandeQueue.h"
 #include "Animation.h"
 #include "Category.h"
+#include "MusicPlayer.h"
 
 namespace GEX
 {
@@ -56,6 +57,12 @@ namespace GEX
 		void											movementUpdate(sf::Time dt);
 		virtual void									updateCurrent(sf::Time dt, CommandeQueue& commands) override;
 		void											checkProjectileLaunch(sf::Time dt, CommandeQueue& commands);
+		void											checkJumping(CommandeQueue& commands);
+		void											checkRunning(CommandeQueue& commands);
+		void											checkAttack(CommandeQueue& commands);
+		void											playLocalSound(CommandeQueue & commands, SoundEffectID effect);
+		void											playLocalSoundRunning(CommandeQueue& commands, SoundEffectID effect);
+		void											stopLocalSoundRunning(CommandeQueue& commands, SoundEffectID effect);
 
 	private:
 		Type											_type;
@@ -65,6 +72,11 @@ namespace GEX
 		bool											_moveRight;
 		bool											_moveLeft;
 		bool											_isFiring;
+		bool											_isJumping;
+		bool											_isAttacking;
+		bool											_isRunningSoungPlay;
+		bool											_isRunningSoungStop;
+		MusicPlayer										_musicRunning;
 		sf::Time										_fireCountdown;
 		Command											_fireCommand;
 		std::size_t										_fireRateLevel;

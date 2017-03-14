@@ -9,7 +9,8 @@ namespace GEX
 	enum class MusicID
 	{
 		MenuTheme,
-		MissionTheme,
+		DessertMusic,
+		AnaRun
 	};
 	class MusicPlayer
 	{

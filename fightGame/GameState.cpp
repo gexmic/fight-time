@@ -26,7 +26,7 @@ namespace GEX
 		_world(*context.window, *context.soundEffects),
 		_player(*context.player)
 	{
-		context.music->play(MusicID::MissionTheme);
+		context.music->play(MusicID::DessertMusic);
 	}
 
 	void GameState::draw()

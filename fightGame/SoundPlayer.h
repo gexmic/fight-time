@@ -35,6 +35,8 @@ namespace GEX
 		
 		void						play(SoundEffectID effect);
 		void						play(SoundEffectID effect, sf::Vector2f position);
+		void						playLoop(SoundEffectID effect, sf::Vector2f position);
+		void						stop(SoundEffectID effectid);
 
 		void						removeStoppedSounds();
 		void						setListenerPosition(sf::Vector2f position);

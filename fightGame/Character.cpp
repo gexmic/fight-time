@@ -1,11 +1,12 @@
 #include "Character.h"
 #include "Category.h"
 #include "DataTables.h"
+#include "SoundNode.h"
+#include "Command.h"
 #include "Utility.h"
 #include <memory>
 #include "JsonFrameParser.hpp"
-
-
+#include "SFML\Audio\Music.hpp"
 
 namespace GEX
 {
@@ -24,7 +25,10 @@ namespace GEX
 		_isFiring(false),
 		_fireRateLevel(1),
 		_fireCountdown(sf::Time::Zero),
-		_category(category)
+		_category(category),
+		_isRunningSoungPlay(false),
+		_isRunningSoungStop(false),
+		_isAttacking(false)
 		
 	{
 		centerOrigin(_sprite);
@@ -57,6 +61,7 @@ namespace GEX
 		_animations[State::Shoot]->addFrameSet(frame.getFramesFor("Shoot"));
 		_animations[State::Shoot]->setDurationAsSeconds(0.7f);	
 
+		
 
 	}
 
@@ -97,6 +102,8 @@ namespace GEX
 				this->setScale({ -1, 1 });
 				_moveRight = false;
 				_moveLeft = true;
+				_isRunningSoungStop = false;
+
 				if (_state != State::Jump && this->getVelocity().y == GRAVITY)
 				{
 					_state = State::Run;
@@ -124,12 +131,10 @@ namespace GEX
 				// facing right
 				this->setScale({ 1, 1 });
 				_moveRight = true;
-				_moveLeft = false;
+				_moveLeft = false;	
+				_isRunningSoungStop = false;
 
-				if (_state == State::Run)
-					this->setVelocity(x, GRAVITY);
-
-				else if (_state != State::Jump && this->getVelocity().y == GRAVITY)
+				if (_state != State::Jump && this->getVelocity().y == GRAVITY)
 				{
 					_state = State::Run;
 					this->setVelocity(x, GRAVITY);
@@ -156,6 +161,7 @@ namespace GEX
 			{
 				this->setVelocity(x, this->getVelocity().y);
 				_state = State::Idle;
+				_isRunningSoungStop = true;
 			}
 		}
 				
@@ -173,6 +179,7 @@ namespace GEX
 				_isFiring = true;
 				_animations[State::Shoot]->start();
 				_state = State::Shoot;
+				_isRunningSoungStop = true;
 			}
 		}
 	}
@@ -183,7 +190,9 @@ namespace GEX
 		{
 			_state = State::Jump;
 			_animations[State::Jump]->start();
-			this->accelerate(this->getVelocity().x, -380.f);
+			this->accelerate(0, -500);
+			_isJumping = true;		
+			_isRunningSoungStop = true;
 		}
 	}
 
@@ -194,6 +203,8 @@ namespace GEX
 			this->setVelocity(0, GRAVITY);
 			_state = State::Melee;
 			_animations[State::Melee]->start();
+			_isAttacking = true;
+			_isRunningSoungStop = true;
 		}
 	}
 
@@ -248,6 +259,7 @@ namespace GEX
 		else if (this->getVelocity().y > GRAVITY)
 		{
 			_sprite.setTextureRect(_animations.at(State::Jump)->getFrameByNumber(_animations.at(State::Jump)->getNumberOfFrames() - 1));
+			_state = State::Jump;
 		}
 
 		else 		
@@ -270,16 +282,18 @@ namespace GEX
 		
 
 		movementUpdate(dt);
+		checkRunning(commands);
 		checkProjectileLaunch(dt, commands);
+		checkAttack(commands);
+		checkJumping(commands);
 		Entity::updateCurrent(dt, commands);
 	}
 	void Character::checkProjectileLaunch(sf::Time dt, CommandeQueue & commands)
 	{
-		//fire();
 		if (_isFiring && _fireCountdown <= sf::Time::Zero)
 		{
 			//commands.push(_fireCommand);
-			//playLocalSound(commands, isAllied() ? SoundEffectID::AlliedGunFire : SoundEffectID::EnemyGunFire);
+			playLocalSound(commands, SoundEffectID::AnaGunFire);
 			_isFiring = false;
 			_fireCountdown += table.at(_type).fireInterval / (_fireRateLevel + 1.f);			
 		}
@@ -288,5 +302,74 @@ namespace GEX
 			_fireCountdown -= dt;
 			_isFiring = false;			
 		}
+	}
+
+	void Character::checkJumping(CommandeQueue & commands)
+	{
+		if (_isJumping )
+		{
+			//commands.push(_fireCommand);
+			playLocalSound(commands, SoundEffectID::AnaJump);
+			_isJumping = false;
+		}
+	}
+
+	void Character::checkRunning(CommandeQueue & commands)
+	{
+		if (_state == State::Run)
+		{
+			if (_isRunningSoungPlay == false)
+			{
+				playLocalSoundRunning(commands, SoundEffectID::Run);
+				_isRunningSoungPlay = true;
+			}
+		}
+
+		if (_isRunningSoungStop == true && _isRunningSoungPlay == true)
+		{
+			stopLocalSoundRunning(commands, SoundEffectID::Run);
+			_isRunningSoungPlay = false;
+			_isRunningSoungStop = false;
+		}
+	}
+
+	void Character::checkAttack(CommandeQueue & commands)
+	{
+		if (_isAttacking)
+		{
+			playLocalSound(commands, SoundEffectID::AnaSword);
+			_isAttacking = false;
+		}
+	}
+
+	void Character::playLocalSound(CommandeQueue & commands, SoundEffectID effect)
+	{
+		sf::Vector2f worldPosition = getWorldPosition();
+
+		Command command;
+		command.category = Category::SoundEffet;
+		command.action = derivedAction<SoundNode>([effect, worldPosition](SoundNode& node, sf::Time)
+		{node.playSound(effect, worldPosition); });
+		commands.push(command);
+	}
+	void Character::playLocalSoundRunning(CommandeQueue & commands, SoundEffectID effect)
+	{
+		sf::Vector2f worldPosition = getWorldPosition();
+
+		Command command;
+		command.category = Category::SoundEffet;
+		command.action = derivedAction<SoundNode>([effect, worldPosition](SoundNode& node, sf::Time)
+		{node.playSoundLoop(effect, worldPosition); });
+		commands.push(command);
+	}
+	void Character::stopLocalSoundRunning(CommandeQueue & commands, SoundEffectID effect)
+	{
+		sf::Vector2f worldPosition = getWorldPosition();
+
+		Command command;
+		command.category = Category::SoundEffet;
+		command.action = derivedAction<SoundNode>([effect, worldPosition](SoundNode& node, sf::Time)
+		{node.stopSound(effect); });
+		commands.push(command);
 	}
 }

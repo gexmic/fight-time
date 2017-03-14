@@ -28,6 +28,8 @@ namespace GEX
 	public:
 		explicit				SoundNode(SoundPlayer& player);
 		void					playSound(SoundEffectID sound, sf::Vector2f position);
+		void					playSoundLoop(SoundEffectID sound, sf::Vector2f position);
+		void					stopSound(SoundEffectID sound);
 
 		unsigned int			getCategory() const override;
 

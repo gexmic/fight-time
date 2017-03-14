@@ -32,8 +32,26 @@ namespace GEX
 	{
 		if(this->getCategory() & Category::SoundEffet)
 		{
-			//std::cout << "Category SoundEffects " << std::endl;
+			std::cout << "Category SoundEffects " << std::endl;
 			_soundPlayer.play(sound, position);
+		}
+	}
+
+	void SoundNode::playSoundLoop(SoundEffectID sound, sf::Vector2f position)
+	{
+		if (this->getCategory() & Category::SoundEffet)
+		{
+			std::cout << "Category SoundEffects " << std::endl;
+			_soundPlayer.playLoop(sound, position);
+		}
+	}
+
+	void SoundNode::stopSound(SoundEffectID sound)
+	{
+		if (this->getCategory() & Category::SoundEffet)
+		{
+			std::cout << "Category SoundEffects " << std::endl;
+			_soundPlayer.stop(sound);
 		}
 	}
 

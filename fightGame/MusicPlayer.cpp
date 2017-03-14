@@ -9,8 +9,9 @@ namespace GEX
 		_filenames(),
 		_volume(100)
 	{
-		_filenames[MusicID::MenuTheme] = "../Media/Music/MenuTheme.ogg";
-		_filenames[MusicID::MissionTheme] = "../Media/Music/MissionTheme.ogg";
+		_filenames[MusicID::MenuTheme]		= "../Media/Music/MenuTheme.wav";
+		_filenames[MusicID::DessertMusic]	= "../Media/Music/dessert.ogg";
+		_filenames[MusicID::AnaRun]			= "../Media/Music/run.wav";
 	}
 
 	void MusicPlayer::play(MusicID theme)
