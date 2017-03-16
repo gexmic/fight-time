@@ -19,7 +19,7 @@ namespace GEX
 	Character::Character(Type type, Category::Type category) :
 		Entity(),
 		_type(type),
-		_sprite(TextureHolder::getInstance().get(table.at(type).texture), sf::IntRect(0,0,HEIGHT, WIDTH)),
+		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).location),
 		_state(State::Idle),
 		_moveRight(false),
 		_isFiring(false),
@@ -33,7 +33,27 @@ namespace GEX
 	{
 		centerOrigin(_sprite);
 
-		JsonFrameParser frame("../Media/Textures/AnaAtlas.json");
+		_fireCommand.category = Category::SceneGroundLayer;
+		_fireCommand.action = [this](SceneNode& node, sf::Time)
+		{
+			this->createBullets(node, Projectile::Type::AnaBullet, 0.0f, 0.2f);
+		};
+
+		std::string caracter;
+		if (_type == Type::Ana)
+			caracter = "AnaAtlas";
+		else if (_type == Type::Azerty)
+			caracter = "RobotAtlas";
+		else if (_type == Type::SirThomasWale)
+			caracter = "KnightAtlas";
+		else if (_type == Type::Katoka)
+			caracter = "NinjaAtlas";
+		else if (_type == Type::Fungi)
+			caracter = "NinjaGirlAtlas";
+
+		JsonFrameParser frame("../Media/Textures/"+caracter+".json");
+
+
 
 		// set up animation for the idel state
 
@@ -61,7 +81,14 @@ namespace GEX
 		_animations[State::Shoot]->addFrameSet(frame.getFramesFor("Shoot"));
 		_animations[State::Shoot]->setDurationAsSeconds(0.7f);	
 
-		
+		_animations[State::Block] = std::unique_ptr<Animation>(new Animation(true));
+		_animations[State::Block]->addFrameSet(frame.getFramesFor("Block"));
+		_animations[State::Block]->setDurationAsSeconds(5.f);
+
+		if (_category == Category::PlayerCharacterOne)
+			_moveRight = true;
+		else
+			_moveLeft = true;
 
 	}
 
@@ -208,9 +235,19 @@ namespace GEX
 		}
 	}
 
+	void Character::block()
+	{
+		if (_state == State::Idle || _state == State::Run)
+		{
+			this->setVelocity(0, GRAVITY);
+			_state = State::Block;
+			_isRunningSoungStop = true;			
+		}		
+	}
 
 
-	bool Character::isMovingRight()
+
+	bool Character::isMovingRight() const
 	{
 		return _moveRight;
 	}
@@ -255,11 +292,20 @@ namespace GEX
 			if (_animations[_state]->getNumberOfCurrentFrame() == _animations[_state]->getNumberOfFrames() - 1)
 				_state = State::Idle;
 		}
+		else if (_state == State::Block)
+		{
+			//if (_animations[_state]->getNumberOfCurrentFrame() < _animations[_state]->getNumberOfFrames())
+				_sprite.setTextureRect(_animations.at(_state)->update(dt));
+
+			/*if (_animations[_state]->getNumberOfCurrentFrame() == _animations[_state]->getNumberOfFrames() - 1)
+				_state = State::Idle;*/
+		}
 
 		else if (this->getVelocity().y > GRAVITY)
 		{
 			_sprite.setTextureRect(_animations.at(State::Jump)->getFrameByNumber(_animations.at(State::Jump)->getNumberOfFrames() - 1));
 			_state = State::Jump;
+			_isRunningSoungStop = true;
 		}
 
 		else 		
@@ -292,7 +338,7 @@ namespace GEX
 	{
 		if (_isFiring && _fireCountdown <= sf::Time::Zero)
 		{
-			//commands.push(_fireCommand);
+			commands.push(_fireCommand);
 			playLocalSound(commands, SoundEffectID::AnaGunFire);
 			_isFiring = false;
 			_fireCountdown += table.at(_type).fireInterval / (_fireRateLevel + 1.f);			
@@ -371,5 +417,20 @@ namespace GEX
 		command.action = derivedAction<SoundNode>([effect, worldPosition](SoundNode& node, sf::Time)
 		{node.stopSound(effect); });
 		commands.push(command);
+	}
+	void Character::createBullets(SceneNode& node, Projectile::Type type, float xOffSet, float yOffSet) const
+	{
+		// node is the ScreenAirLayer node that the command was targeted to
+		std::unique_ptr<Projectile> projectile(new Projectile(type));
+
+		sf::Vector2f offset( 40 , -5);
+		sf::Vector2f velocity(projectile->getMaxSpeed(), 0);
+		float sign =  isMovingRight() ? 1.f : -1.f;
+		projectile->setPosition(getWorldPosition() + offset * sign );
+		if(_moveRight)
+			projectile->setVelocity(velocity);
+		else if (_moveLeft)
+			projectile->setVelocity(-velocity);
+		node.attachChild(std::move(projectile));
 	}
 }

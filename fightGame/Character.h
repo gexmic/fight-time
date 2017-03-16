@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Category.h"
 #include "MusicPlayer.h"
+#include "Projectile.h"
 
 namespace GEX
 {
@@ -34,7 +35,8 @@ namespace GEX
 			Melee,
 			Shoot,
 			Run,			
-			Dead
+			Dead,
+			Block
 		};
 
 	public:
@@ -48,7 +50,8 @@ namespace GEX
 		void											fire();
 		void											jump();
 		void											attack();
-		bool											isMovingRight();
+		void											block();
+		bool											isMovingRight() const;
 		bool											isMovingLeft();
 		void											setState(State state);
 
@@ -63,6 +66,7 @@ namespace GEX
 		void											playLocalSound(CommandeQueue & commands, SoundEffectID effect);
 		void											playLocalSoundRunning(CommandeQueue& commands, SoundEffectID effect);
 		void											stopLocalSoundRunning(CommandeQueue& commands, SoundEffectID effect);
+		void											createBullets(SceneNode& node, Projectile::Type type, float xOffSet, float yOffSet) const;
 
 	private:
 		Type											_type;

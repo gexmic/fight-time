@@ -44,36 +44,50 @@ namespace GEX
 	void PlayerControl::handleEvent(const sf::Event& event, CommandeQueue& commands)
 	{
 		// for character One
+		// jump
 		if (sf::Joystick::isButtonPressed(1, 0))
 		{
 			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::Jump]);
 		}
-
+		// gun shoot
 		if (sf::Joystick::isButtonPressed(1, 1))
 		{
 			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::FireBullet]);
 		}
+		// attack 
 		if (sf::Joystick::isButtonPressed(1, 2))
 		{
-			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::meleeAttack]);
+			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::MeleeAttack]);
+		}
+		// block
+		if (sf::Joystick::isButtonPressed(1, 3))
+		{
+			commands.push(_actionBindingsCharacterOne[sf::Joystick::isButtonPressed, Action::Block]);
 		}
 
 		//////////////////////////////////////////
 
 		// for character Two
-
+		// jump
 		if (sf::Joystick::isButtonPressed(0, 0))
 		{
 			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::Jump]);
 		}
-
+		// gun shoot
 		if (sf::Joystick::isButtonPressed(0, 1))
 		{
 			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::FireBullet]);
 		}
+		// attack
 		if (sf::Joystick::isButtonPressed(0, 2))
 		{
-			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::meleeAttack]);
+			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::MeleeAttack]);
+		}
+
+		// block
+		if (sf::Joystick::isButtonPressed(0, 3))
+		{
+			commands.push(_actionBindingsCharacterTwo[sf::Joystick::isButtonPressed, Action::Block]);
 		}
 		
 	}
@@ -93,7 +107,7 @@ namespace GEX
 					commands.push(_actionBindingsCharacterOne[sf::Joystick::Axis::X, Action::MoveRight]);
 				}
 				
-				else 
+				else if (!sf::Joystick::isButtonPressed(1,3))
 					commands.push(_actionBindingsCharacterOne[sf::Joystick::Axis::X, Action::MoveIdel]);
 		///////////////////////////////////////////////
 	
@@ -109,7 +123,7 @@ namespace GEX
 					commands.push(_actionBindingsCharacterTwo[sf::Joystick::Axis::X, Action::MoveRight]);
 				}
 
-				else
+				else if (!sf::Joystick::isButtonPressed(0, 3))
 					commands.push(_actionBindingsCharacterTwo[sf::Joystick::Axis::X, Action::MoveIdel]);
 
 
@@ -137,8 +151,8 @@ namespace GEX
 		_actionBindingsCharacterOne[Action::MoveIdel].action		= derivedAction<Character>(PlayerMover(0, 0));
 		_actionBindingsCharacterOne[Action::Jump].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.jump(); });
 		_actionBindingsCharacterOne[Action::FireBullet].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.fire(); });
-		_actionBindingsCharacterOne[Action::meleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
-
+		_actionBindingsCharacterOne[Action::MeleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
+		_actionBindingsCharacterOne[Action::Block].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.block(); });
 
 
 		for (auto& pair : _actionBindingsCharacterOne)
@@ -154,8 +168,8 @@ namespace GEX
 		_actionBindingsCharacterTwo[Action::MoveIdel].action		= derivedAction<Character>(PlayerMover(0, 0));
 		_actionBindingsCharacterTwo[Action::Jump].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.jump(); });
 		_actionBindingsCharacterTwo[Action::FireBullet].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.fire(); });
-		_actionBindingsCharacterTwo[Action::meleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
-
+		_actionBindingsCharacterTwo[Action::MeleeAttack].action		= derivedAction<Character>([](Character& a, sf::Time& dt) {a.attack(); });
+		_actionBindingsCharacterTwo[Action::Block].action			= derivedAction<Character>([](Character& a, sf::Time& dt) {a.block(); });
 
 
 		for (auto& pair : _actionBindingsCharacterTwo)

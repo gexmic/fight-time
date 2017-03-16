@@ -34,7 +34,7 @@ namespace GEX
 	Projectile::Projectile(Type type) :
 		Entity(table.at(type).damege),
 		_type(type),
-		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).location)
+		_sprite(TextureHolder::getInstance().get(table.at(type).texture))
 	{
 		centerOrigin(_sprite);
 		
@@ -52,13 +52,9 @@ namespace GEX
 	{
 		switch (_type)		
 		{
-		/*case Type::EnemyBullet:
+		case Type::AnaBullet:
 			return Category::EnemyProjectile;
 			break;
-		case Type::AlliedBullet:		
-		case Type::Missile:
-			return Category::AlliedProjectile;
-			break;*/
 		default:
 			assert(0);
 			return Category::None;
