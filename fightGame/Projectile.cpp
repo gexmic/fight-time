@@ -40,6 +40,11 @@ namespace GEX
 		
 	}
 
+	Projectile::~Projectile()
+	{
+		std::cout << "Bullet destroyd" << std::endl;
+	}
+
 	
 
 	void Projectile::guideTowards(sf::Vector2f position)

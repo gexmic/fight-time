@@ -202,7 +202,7 @@ namespace GEX
 		_characterOne->setPosition(300, 300);
 		_sceneLayers[Ground]->attachChild(std::move(playerOne));
 
-		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Fungi, Category::Type::PlayerCharacterTwo));
+		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Katoka, Category::Type::PlayerCharacterTwo));
 		_characterTwo = playerTwo.get();
 		_characterTwo->setPosition(800, 300);
 		_characterTwo->setScale({ -1, 1 });

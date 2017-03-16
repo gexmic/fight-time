@@ -35,6 +35,7 @@ namespace GEX
 
 	public:
 							Projectile(Type type);
+							~Projectile();
 		//bool				isGuided();
 		void				guideTowards(sf::Vector2f position);
 		unsigned int		getCategory() const override;

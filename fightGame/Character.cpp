@@ -49,7 +49,7 @@ namespace GEX
 		else if (_type == Type::Katoka)
 			caracter = "NinjaAtlas";
 		else if (_type == Type::Fungi)
-			caracter = "NinjaGirlAtlas";
+			caracter = "NinjaAtlass";
 
 		JsonFrameParser frame("../Media/Textures/"+caracter+".json");
 
