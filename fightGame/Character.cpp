@@ -15,6 +15,7 @@ namespace GEX
 	const int HEIGHT = 151;
 	const int WIDTH = 151;
 	const float GRAVITY = 8;
+	const int MAXHEALTH = 300;
 
 	Character::Character(Type type, Category::Type category) :
 		Entity(),
@@ -28,7 +29,8 @@ namespace GEX
 		_category(category),
 		_isRunningSoungPlay(false),
 		_isRunningSoungStop(false),
-		_isAttacking(false)
+		_isAttacking(false),
+		_health(200)
 		
 	{
 		centerOrigin(_sprite);
@@ -90,6 +92,31 @@ namespace GEX
 		else
 			_moveLeft = true;
 
+		if (_category == Category::PlayerCharacterOne)
+		{
+			_healthBarMaxHealth.setSize(sf::Vector2f(MAXHEALTH, 25));
+			_healthBarMaxHealth.setPosition(sf::Vector2f(100, 50));
+			_healthBarMaxHealth.setFillColor(sf::Color::Red);
+			_healthBarMaxHealth.setOutlineColor(sf::Color::Black);
+			_healthBarMaxHealth.setOutlineThickness(2);
+
+			_healthBarCurrentHealth.setSize(sf::Vector2f(_health, 25));
+			_healthBarCurrentHealth.setPosition(sf::Vector2f(100, 50));
+			_healthBarCurrentHealth.setFillColor(sf::Color::Green);
+		}
+		if (_category == Category::PlayerCharacterTwo)
+		{
+			_healthBarMaxHealth.setSize(sf::Vector2f(MAXHEALTH, 25));
+			_healthBarMaxHealth.setPosition(sf::Vector2f(860, 50));
+			_healthBarMaxHealth.setFillColor(sf::Color::Green);
+			_healthBarMaxHealth.setOutlineColor(sf::Color::Black);
+			_healthBarMaxHealth.setOutlineThickness(2);
+
+			_healthBarCurrentHealth.setSize(sf::Vector2f(_health, 25));
+			_healthBarCurrentHealth.setPosition(sf::Vector2f(860, 50));
+			_healthBarCurrentHealth.setFillColor(sf::Color::Red);
+		}
+
 	}
 
 	unsigned int Character::getCategory() const
@@ -105,6 +132,15 @@ namespace GEX
 	sf::FloatRect Character::getBoundingRect() const
 	{
 		return getWorldTransform().transformRect(_sprite.getGlobalBounds());
+	}
+
+	void Character::setHealth()
+	{
+	}
+
+	int Character::getHealth() const
+	{
+		return _health;
 	}
 
 	bool Character::isStateJump()
@@ -263,9 +299,21 @@ namespace GEX
 	}
 
 	void Character::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
-	{
+	{		
+		if (_category == Category::PlayerCharacterTwo)
+		{
+			target.draw(_healthBarMaxHealth);
+			target.draw(_healthBarCurrentHealth);
+		}
+		else
+		{
+			target.draw(_healthBarMaxHealth);
+			target.draw(_healthBarCurrentHealth);
+		}
 		target.draw(_sprite, state);
 	}
+
+	
 
 	void Character::movementUpdate(sf::Time dt)
 	{
@@ -332,7 +380,17 @@ namespace GEX
 		checkProjectileLaunch(dt, commands);
 		checkAttack(commands);
 		checkJumping(commands);
+		calculateHealth();
 		Entity::updateCurrent(dt, commands);
+	}
+	void Character::calculateHealth() const
+	{
+		if (_category == Category::PlayerCharacterTwo)
+		{
+			_healthBarCurrentHealth.setSize(sf::Vector2f(MAXHEALTH - _health, 25));
+		}
+		else
+		_healthBarCurrentHealth.setSize(sf::Vector2f(_health, 25));
 	}
 	void Character::checkProjectileLaunch(sf::Time dt, CommandeQueue & commands)
 	{

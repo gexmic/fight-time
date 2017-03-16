@@ -45,6 +45,8 @@ namespace GEX
 		unsigned int									getCategory() const override;
 		float											getMaxSpeed() const;
 		sf::FloatRect									getBoundingRect() const override;
+		void											setHealth();
+		int												getHealth()const;
 		bool											isStateJump();
 		void											move(float x, float y);
 		void											fire();
@@ -57,8 +59,10 @@ namespace GEX
 
 	private:
 		void											drawCurrent(sf::RenderTarget& target, sf::RenderStates state) const override;
+		
 		void											movementUpdate(sf::Time dt);
 		virtual void									updateCurrent(sf::Time dt, CommandeQueue& commands) override;
+		void											calculateHealth()const ;
 		void											checkProjectileLaunch(sf::Time dt, CommandeQueue& commands);
 		void											checkJumping(CommandeQueue& commands);
 		void											checkRunning(CommandeQueue& commands);
@@ -85,6 +89,9 @@ namespace GEX
 		Command											_fireCommand;
 		std::size_t										_fireRateLevel;
 		Category::Type									_category;
+		int												_health;
+		sf::RectangleShape								_healthBarMaxHealth;
+		mutable sf::RectangleShape						_healthBarCurrentHealth;
 
 		std::map<State, std::unique_ptr<Animation>>		_animations;
 	};
