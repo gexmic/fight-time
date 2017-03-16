@@ -51,7 +51,6 @@ namespace GEX
 		float					speed;
 		float					approachRate; ///< for guided projectile how fast ther turn
 		TextureID				texture;
-		sf::IntRect				location;
 
 	};
 

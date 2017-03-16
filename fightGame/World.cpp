@@ -197,16 +197,16 @@ namespace GEX
 
 
 		// add player to the world
-		std::unique_ptr<Character> ana(new Character(_characterOne->Ana, Category::Type::PlayerCharacterOne));
-		_characterOne = ana.get();
+		std::unique_ptr<Character> playerOne(new Character(_characterOne->Ana, Category::Type::PlayerCharacterOne));
+		_characterOne = playerOne.get();
 		_characterOne->setPosition(300, 300);
-		_sceneLayers[Ground]->attachChild(std::move(ana));
+		_sceneLayers[Ground]->attachChild(std::move(playerOne));
 
-		std::unique_ptr<Character> anaTwo(new Character(_characterTwo->Ana, Category::Type::PlayerCharacterTwo));
-		_characterTwo = anaTwo.get();
+		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Katoka, Category::Type::PlayerCharacterTwo));
+		_characterTwo = playerTwo.get();
 		_characterTwo->setPosition(800, 300);
 		_characterTwo->setScale({ -1, 1 });
-		_sceneLayers[Ground]->attachChild(std::move(anaTwo));
+		_sceneLayers[Ground]->attachChild(std::move(playerTwo));
 
 
 		// Add the background sprite to the scene

@@ -33,7 +33,8 @@ namespace GEX
 		MoveDown,
 		MoveIdel,
 		FireBullet,
-		meleeAttack
+		MeleeAttack,
+		Block
 	};
 
 	enum class MissionStatus

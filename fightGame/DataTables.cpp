@@ -31,9 +31,33 @@ namespace GEX
 
 		data[Character::Type::Ana].hitpoint = 15;
 		data[Character::Type::Ana].speed = 150.f;
-		data[Character::Type::Ana].fireInterval = sf::seconds(4);
+		data[Character::Type::Ana].fireInterval = sf::seconds(1);
 		data[Character::Type::Ana].texture = TextureID::AnaEntity;
-		data[Character::Type::Ana].location = sf::IntRect(613, 154, 160, 136);
+		data[Character::Type::Ana].location = sf::IntRect(766, 154, 160, 136);
+
+		data[Character::Type::Azerty].hitpoint = 15;
+		data[Character::Type::Azerty].speed = 150.f;
+		data[Character::Type::Azerty].fireInterval = sf::seconds(1);
+		data[Character::Type::Azerty].texture = TextureID::RobotEntity;
+		data[Character::Type::Azerty].location = sf::IntRect(430, 133, 142, 139);
+
+		data[Character::Type::SirThomasWale].hitpoint = 15;
+		data[Character::Type::SirThomasWale].speed = 150.f;
+		data[Character::Type::SirThomasWale].fireInterval = sf::seconds(1);
+		data[Character::Type::SirThomasWale].texture = TextureID::KnightEntity;
+		data[Character::Type::SirThomasWale].location = sf::IntRect(150, 1075, 147, 177);
+
+		data[Character::Type::Katoka].hitpoint = 15;
+		data[Character::Type::Katoka].speed = 150.f;
+		data[Character::Type::Katoka].fireInterval = sf::seconds(1);
+		data[Character::Type::Katoka].texture = TextureID::NinjaEntity;
+		data[Character::Type::Katoka].location = sf::IntRect(61, 181, 58, 110);
+
+		data[Character::Type::Fungi].hitpoint = 15;
+		data[Character::Type::Fungi].speed = 150.f;
+		data[Character::Type::Fungi].fireInterval = sf::seconds(1);
+		data[Character::Type::Fungi].texture = TextureID::NinjaGirlEntity;
+		data[Character::Type::Fungi].location = sf::IntRect(327, 205, 73, 125);
 
 		return data;
 	}
@@ -137,11 +161,11 @@ namespace GEX
 
 		data[Projectile::Type::AnaBullet].damege		= 10;
 		data[Projectile::Type::AnaBullet].speed			= 300.f;
-		data[Projectile::Type::AnaBullet].location		 = sf::IntRect(178, 64, 3, 14);
+		data[Projectile::Type::AnaBullet].texture		= TextureID::Bullet;
 
 		data[Projectile::Type::RobBullet].damege		= 10;
-		data[Projectile::Type::RobBullet].speed		= 300.f;
-		data[Projectile::Type::RobBullet].location    = sf::IntRect(178, 64, 3, 14);
+		data[Projectile::Type::RobBullet].speed			= 300.f;
+		data[Projectile::Type::RobBullet].texture		= TextureID::Bullet;
 
 		return data;
 	}

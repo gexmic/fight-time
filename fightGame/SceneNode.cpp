@@ -162,7 +162,7 @@ namespace GEX
 		// draw current then children
 
 		drawCurrent(target, state);
-		drawBoundingRect(target, state);
+		//drawBoundingRect(target, state);
 		drawChildren(target, state);		
 	}
 

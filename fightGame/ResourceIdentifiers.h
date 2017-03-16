@@ -28,6 +28,10 @@ namespace GEX
 		MenuScreen,		
 		Particale,
 		AnaEntity,
+		RobotEntity,
+		KnightEntity,
+		NinjaEntity,
+		NinjaGirlEntity,
 		Bullet
 		
 	};
