@@ -29,12 +29,13 @@ airplane class
 namespace GEX
 {
 
-	const std::map<Projectile::Type, ProjectileDate> table = initializeProjectileDate();
+	const std::map<Projectile::CharacterTypeBullet, ProjectileDate> table = initializeProjectileDate();
 
-	Projectile::Projectile(Type type) :
-		Entity(table.at(type).damege),
+	Projectile::Projectile(Type type, Projectile::CharacterTypeBullet charcterTypeBullet) :
+		Entity(table.at(charcterTypeBullet).damege),
 		_type(type),
-		_sprite(TextureHolder::getInstance().get(table.at(type).texture))
+		_characterTypeBullet(charcterTypeBullet),
+		_sprite(TextureHolder::getInstance().get(table.at(charcterTypeBullet).texture))
 	{
 		centerOrigin(_sprite);
 		
@@ -44,21 +45,18 @@ namespace GEX
 	{
 		std::cout << "Bullet destroyd" << std::endl;
 	}
-
 	
 
-	void Projectile::guideTowards(sf::Vector2f position)
-	{
-		/*assert(isGuided());
-		_targerDirection = unitVector(position - getWorldPosition());*/
-	}
 
 	unsigned int Projectile::getCategory() const
 	{
 		switch (_type)		
 		{
-		case Type::AnaBullet:
-			return Category::EnemyProjectile;
+		case Type::playerOneBullet:
+			return Category::BulletPlayerOne;
+			break;
+		case Type::playerTwoBullet:
+			return Category::BulletPlayerTwo;
 			break;
 		default:
 			assert(0);
@@ -69,14 +67,7 @@ namespace GEX
 
 
 	void Projectile::updateCurrent(sf::Time dt, CommandeQueue& commands)
-	{		
-		/*if (isGuided())
-		{
-			
-			sf::Vector2f newVelocity = unitVector( table.at(_type).approachRate * dt.asSeconds() * _targerDirection + getVelocity());
-			setVelocity( newVelocity * getMaxSpeed());
-			setRotation(arctan2(newVelocity.x, newVelocity.y * -1));
-		}*/
+	{
 		Entity::updateCurrent(dt, commands);
 	}
 
@@ -88,7 +79,7 @@ namespace GEX
 
 	float Projectile::getMaxSpeed() const
 	{
-		return table.at(_type).speed;
+		return table.at(_characterTypeBullet).speed;
 	}
 
 	void Projectile::drawCurrent(sf::RenderTarget & target, sf::RenderStates states) const

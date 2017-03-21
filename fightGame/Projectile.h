@@ -29,15 +29,21 @@ namespace GEX
 	public:
 		enum class Type
 		{
-			AnaBullet,
-			RobBullet
+			playerOneBullet,
+			playerTwoBullet
 		};
 
 	public:
-							Projectile(Type type);
+		enum class CharacterTypeBullet
+		{
+			AnaBullet,
+			RobotBullet,
+			NinjaBullet
+		};
+
+	public:
+							Projectile(Type type, CharacterTypeBullet charcterTypeBullet);
 							~Projectile();
-		//bool				isGuided();
-		void				guideTowards(sf::Vector2f position);
 		unsigned int		getCategory() const override;
 		float				getMaxSpeed() const;
 	
@@ -49,6 +55,7 @@ namespace GEX
 
 	private:
 		Type				_type;
+		CharacterTypeBullet _characterTypeBullet;
 		sf::Sprite			_sprite;
 		sf::Vector2f		_targerDirection; ///<unit vector pointing at closest enemy plane.
 	};

@@ -156,8 +156,7 @@ namespace GEX
 				character->setState(character->Idle);
 				character->setPosition(CharacterPosition.x, tilePos.y - BUFFER);
 				character->setVelocity(character->getVelocity().x, 0);
-			}
-			
+			}			
 		}
 		else
 			character->setPosition(CharacterPosition);		
@@ -202,35 +201,11 @@ namespace GEX
 		_characterOne->setPosition(300, 300);
 		_sceneLayers[Ground]->attachChild(std::move(playerOne));
 
-		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Katoka, Category::Type::PlayerCharacterTwo));
+		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Azerty, Category::Type::PlayerCharacterTwo));
 		_characterTwo = playerTwo.get();
 		_characterTwo->setPosition(800, 300);
 		_characterTwo->setScale({ -1, 1 });
 		_sceneLayers[Ground]->attachChild(std::move(playerTwo));
-
-
-		// Add the background sprite to the scene
-		//sf::Texture& finish = TextureHolder::getInstance().get(TextureID::FinishLine);
-		//sf::IntRect FinishRect(0, 0, 1024, 76);
-		//std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finish, FinishRect));
-		//_sceneLayers[FinishLine]->attachChild(std::move(finishLine));
-
-
-
-		////particle system
-		//std::unique_ptr<ParticuleNode> smokeNode(new ParticuleNode(Particule::Type::Smoke));
-		//_sceneLayers[Air]->attachChild(std::move(smokeNode));
-
-		//std::unique_ptr<ParticuleNode> fireNode(new ParticuleNode(Particule::Type::Propellant));
-		//_sceneLayers[Air]->attachChild(std::move(fireNode));
-
-
-		//// Add player's aircraft
-		//std::unique_ptr<Airplaine> leader(new Airplaine(Airplaine::Type::Eagle));
-		//_playerAircraft = leader.get();
-		//_playerAircraft->setPosition(_spawnPosition);
-		//_playerAircraft->setVelocity(0.f, _scrollSpeed);
-		//_sceneLayers[Air]->attachChild(std::move(leader));
 
 		// add SoundNode
 
@@ -296,6 +271,42 @@ namespace GEX
 
 		if (_map->isItSolid(tileToTheBottomPlayerTwo))
 			adapPlayerPositionFromTileBottom(tileToTheBottomPlayerTwo, _characterTwo);
+
+		// build a list of all pair of colloding scenenode all pair
+		std::set<SceneNode::Pair> collisionPairs;
+		_sceneGraph.checkSceneCollision(_sceneGraph, collisionPairs);
+
+		// for each collision do someting
+		for (auto pair : collisionPairs)
+		{		
+			// check if the bullet from one character is in contact with the other
+			if (matchesCategories(pair, Category::PlayerCharacterOne, Category::BulletPlayerTwo) ||
+				matchesCategories(pair, Category::PlayerCharacterTwo, Category::BulletPlayerOne))
+			{
+				auto& player = static_cast<Character&> (*pair.first);
+				auto& projectile = static_cast<Projectile&>(*pair.second);
+
+				if (!player.isBlocking())
+				{
+					player.damage(projectile.getHitPoint());
+				}
+				projectile.destroy();
+			}
+
+			// check if two player colide and check the state to determin if the player is attacking or not
+
+			if (matchesCategories(pair, Category::PlayerCharacterOne, Category::PlayerCharacterTwo))
+			{
+				auto& playerOne = static_cast<Character&> (*pair.first);
+				auto& playerTwo = static_cast<Character&>(*pair.second);
+
+				if (_characterOne->isStateAttack())
+					playerTwo.damage(playerOne.getAttackDamage());
+				if (_characterTwo->isStateAttack())
+					playerOne.damage(playerTwo.getAttackDamage());				
+			}
+
+		}
 
 	}
 

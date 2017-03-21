@@ -39,6 +39,7 @@ namespace GEX
 		void			 accelerateAngulaVelocity(float av);
 
 		int				 getHitPoint() const;
+		int				 getAttackDamage() const;
 		void			 repair(int points);
 		void			 damage(int points);
 		void			 destroy();

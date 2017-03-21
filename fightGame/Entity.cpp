@@ -68,7 +68,7 @@ namespace GEX
 	int Entity::getHitPoint() const
 	{
 		return _hitpoints;
-	}
+	}	
 
 	void Entity::repair(int points)
 	{

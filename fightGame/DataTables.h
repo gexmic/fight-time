@@ -38,7 +38,8 @@ namespace GEX
 
 	struct CharacterData
 	{
-		int						hitpoint;
+		int						health;
+		int						attackDamage;
 		float					speed;
 		TextureID				texture;
 		sf::IntRect				location;
@@ -72,7 +73,7 @@ namespace GEX
 
 	std::map<Character::Type, CharacterData>        initializeCharacterData();
 	std::map<TileMap::Tile, MapDessertData>				initializeMapData();
-	std::map<Projectile::Type, ProjectileDate>		initializeProjectileDate();
+	std::map<Projectile::CharacterTypeBullet, ProjectileDate>		initializeProjectileDate();
 	std::map<Particule::Type, ParticuleData>        initializeParticleData();
 
 }
