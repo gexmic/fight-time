@@ -60,6 +60,7 @@ namespace GEX
 		bool											isPayerOne() const;
 		bool											isBlocking()const;
 		void											setState(State state);
+		int												getNumberofLost();
 		virtual bool									isMarkedForRemoval() const override;
 
 	private:
@@ -98,6 +99,7 @@ namespace GEX
 		sf::RectangleShape								_healthBarMaxHealth;
 		mutable sf::RectangleShape						_healthBarCurrentHealth;
 		Projectile::CharacterTypeBullet					_characterTypeBullet;
+		int												_roundLost;
 
 		std::map<State, std::unique_ptr<Animation>>		_animations;
 	};

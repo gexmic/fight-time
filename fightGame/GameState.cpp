@@ -40,7 +40,9 @@ namespace GEX
 	{
 		_world.update(dt);
 		// ////////////////////////////
-		
+
+		/*_player.setFightStatus(FightStatus::PlayerOneWin);
+		requestStackPush(StateID::GameOver);*/
 		// ///////////////////////////
 		CommandeQueue& commands = _world.getCommandQueue();
 		_player.handleRealTimeInput(commands);
@@ -60,12 +62,7 @@ namespace GEX
 		{
 			requestStackPop();
 			requestStackPush(StateID::Menu);
-		}
-
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G)
-		{
-			requestStackPush(StateID::Gex);
-		}
+		}		
 		return true;
 	}
 }

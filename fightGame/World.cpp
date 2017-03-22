@@ -47,12 +47,22 @@ namespace GEX
 		_sceneLayers(),
 		_commandQueue(),
 		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f),
-		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo))
+		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo)),
+		_playerOneNumOfWin(1),
+		_playerTwoNumOfWin(0)
+		
+
 
 	{
 		buildScene();
 		centerOrigin(_topIcon);
 		_topIcon.setPosition(window.getSize().x / 2, 75);
+		_roundWinShape.setRadius(10);
+		_roundWinShape.setFillColor(sf::Color::Transparent);
+		_roundWinShape.setOutlineThickness(2);
+		_roundWinShape.setOutlineColor(sf::Color::Black);
+
+
 	}
 
 	void World::update(sf::Time deltaTime)
@@ -80,9 +90,40 @@ namespace GEX
 
 	void World::draw()
 	{
+
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
 		_window.draw(_topIcon);
+		for (int i = 0; i < 2; ++i)
+		{
+			sf::Vector2f tmp(380 - i * 30.f, 85.f);
+			_roundWinShape.setPosition(tmp);
+			_roundWinShape.setFillColor(sf::Color::Transparent);
+			_window.draw(_roundWinShape);
+			for (int i = 0; i < _playerOneNumOfWin; ++i)
+			{
+				sf::Vector2f tmp(380 - i * 30.f, 85.f);
+				_roundWinShape.setPosition(tmp);
+				_roundWinShape.setFillColor(sf::Color::Yellow);
+				_window.draw(_roundWinShape);
+			}
+		}
+
+		for (int i = 0; i < 2; ++i)
+		{
+			sf::Vector2f tmp(860 + i * 30.f, 85.f);
+			_roundWinShape.setPosition(tmp);
+			_roundWinShape.setFillColor(sf::Color::Transparent);
+			_window.draw(_roundWinShape);
+
+			for (int i = 0; i < _playerTwoNumOfWin; ++i)
+			{
+				sf::Vector2f tmp(860 + i * 30.f, 85.f);
+				_roundWinShape.setPosition(tmp);
+				_roundWinShape.setFillColor(sf::Color::Yellow);
+				_window.draw(_roundWinShape);
+			}
+		}
 
 	}
 
@@ -170,6 +211,16 @@ namespace GEX
 	CommandeQueue & World::getCommandQueue()
 	{
 		return _commandQueue;
+	}
+
+	int World::playerOneNumWin()
+	{
+		return _characterTwo->getNumberofLost();
+	}
+
+	int World::playerTwoNumWin()
+	{
+		return _characterOne->getNumberofLost();
 	}
 
 	void World::buildScene()
@@ -295,6 +346,11 @@ namespace GEX
 				{
 					player.damage(projectile.getHitPoint());
 				}
+				if (player.isBlocking())
+				{
+					player.damage(3);
+				}
+
 				projectile.destroy();
 			}
 

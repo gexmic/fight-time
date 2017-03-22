@@ -37,11 +37,13 @@ namespace GEX
 		Block
 	};
 
-	enum class MissionStatus
+	enum class FightStatus
 	{
-		Active,
-		Success,
-		Fail
+		Fight,
+		PlayerOneRoundOneWin,
+		PlayerTwoRoundOneWin,
+		PlayerOneWin,
+		PlayerTwoWin
 	};
 
 	class PlayerControl
@@ -51,8 +53,8 @@ namespace GEX
 		
 		void									handleEvent(const sf::Event& event, CommandeQueue& commands);
 		void									handleRealTimeInput(CommandeQueue& commands);
-        void									setMissionStatus(MissionStatus status);
-		MissionStatus							getMissionStatus()const;
+        void									setFightStatus(FightStatus status);
+		FightStatus								getFightStatus()const;
 	private:
 		void									initializaKeyBindings();
 		void									initializaActionBindings();
@@ -60,12 +62,10 @@ namespace GEX
 		
 
 	private:
-		//std::map<sf::Event::JoystickMoveEvent, Action>		_keyBindings;
 		std::map<sf::Joystick::Axis, Action>		_keyBindings;
-		//std::map<sf::Keyboard::Key, Action>		_keyBindings;
 		std::map<Action, Command>				_actionBindingsCharacterOne;
 		std::map<Action, Command>				_actionBindingsCharacterTwo;
-		MissionStatus							_missionStatus;
+		FightStatus								_fightStatus;
 	};
 
 }

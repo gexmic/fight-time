@@ -34,7 +34,7 @@ namespace GEX
 	};
 
 	PlayerControl::PlayerControl() :
-		_missionStatus(MissionStatus::Active)
+		_fightStatus(FightStatus::Fight)
 	{
 		initializaKeyBindings();
 		initializaActionBindings();
@@ -193,13 +193,13 @@ namespace GEX
 			return false;
 		}
 	}
-	void PlayerControl::setMissionStatus(MissionStatus status)
+	void PlayerControl::setFightStatus(FightStatus status)
 	{
-		_missionStatus = status;
+		_fightStatus = status;
 	}
-	MissionStatus PlayerControl::getMissionStatus() const
+	FightStatus PlayerControl::getFightStatus() const
 	{
-		return _missionStatus;
+		return _fightStatus;
 	}
 }
 

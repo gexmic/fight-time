@@ -84,7 +84,7 @@ namespace GEX
 
 		_animations[State::Dead] = std::unique_ptr<Animation>(new Animation(false));
 		_animations[State::Dead]->addFrameSet(frame.getFramesFor("Dead"));
-		_animations[State::Dead]->setDurationAsSeconds(0.8f);
+		_animations[State::Dead]->setDurationAsSeconds(1.f);
 
 		_animations[State::Jump] = std::unique_ptr<Animation>(new Animation(false));
 		_animations[State::Jump]->addFrameSet(frame.getFramesFor("Jump"));
@@ -344,6 +344,11 @@ namespace GEX
 		_state = state;
 	}
 
+	int Character::getNumberofLost()
+	{
+		return _roundLost;
+	}
+
 	bool Character::isMarkedForRemoval() const
 	{
 		return false;
@@ -424,6 +429,7 @@ namespace GEX
 		if (this->getHealth() <= 0)
 		{
 			_state = State::Dead;
+			_roundLost = _roundLost + 1;
 		}
 		
 
@@ -437,12 +443,15 @@ namespace GEX
 	}
 	void Character::calculateHealth() const
 	{
+		double health = getHitPoint();
+		if (health < 0)
+			health = 0;
 		if (_category == Category::PlayerCharacterTwo)
 		{
-			_healthBarCurrentHealth.setSize(sf::Vector2f(MAXHEALTH - getHitPoint(), 25));
+			_healthBarCurrentHealth.setSize(sf::Vector2f(MAXHEALTH - health, 25));
 		}
 		else
-		_healthBarCurrentHealth.setSize(sf::Vector2f(getHitPoint(), 25));
+		_healthBarCurrentHealth.setSize(sf::Vector2f(health, 25));
 	}
 	void Character::checkProjectileLaunch(sf::Time dt, CommandeQueue & commands)
 	{
