@@ -39,9 +39,8 @@ namespace GEX
 		void			 accelerateAngulaVelocity(float av);
 
 		int				 getHitPoint() const;
-		int				 getAttackDamage() const;
 		void			 repair(int points);
-		void			 damage(int points);
+		void			 damage(double points);
 		void			 destroy();
 		bool		     isDestroyed() const override;
 
@@ -52,7 +51,7 @@ namespace GEX
 		
 		sf::Vector2f     _velocity;
 		float			 _angularVelocity;
-		int				 _hitpoints;
+		double			 _hitpoints;
 		
 	};
 }

@@ -29,6 +29,7 @@ world class
 #include "TileMap.h"
 #include "Character.h"
 #include <iostream>
+#include "Utility.h"
 
 namespace GEX
 {
@@ -45,10 +46,13 @@ namespace GEX
 		_sceneGraph(),
 		_sceneLayers(),
 		_commandQueue(),
-		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f)
+		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f),
+		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo))
 
 	{
 		buildScene();
+		centerOrigin(_topIcon);
+		_topIcon.setPosition(window.getSize().x / 2, 75);
 	}
 
 	void World::update(sf::Time deltaTime)
@@ -78,6 +82,7 @@ namespace GEX
 	{
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
+		_window.draw(_topIcon);
 
 	}
 
@@ -87,13 +92,13 @@ namespace GEX
 		const float borderDistance = BUFFER;
 
 		// adapte position for player
-		
+
 		sf::Vector2f playerPosition = character->getPosition();
 		playerPosition.x = std::max(playerPosition.x, viewBounds.left + borderDistance);
 		playerPosition.x = std::min(playerPosition.x, viewBounds.left + viewBounds.width - borderDistance);
 		playerPosition.y = std::max(playerPosition.y, viewBounds.top + borderDistance);
 		playerPosition.y = std::min(playerPosition.y, viewBounds.top + viewBounds.height - borderDistance);
-		character->setPosition(playerPosition);	
+		character->setPosition(playerPosition);
 	}
 
 	void World::adapPlayerPositionFromTileRight(int tileNumber, Character* character)
@@ -141,7 +146,7 @@ namespace GEX
 		// adapte position for player one
 		sf::Vector2f CharacterPosition = character->getPosition();
 
-		
+
 		if (CharacterPosition.y + BUFFER >= tilePos.y)
 		{
 			if (character->isStateJump() == false)
@@ -156,10 +161,10 @@ namespace GEX
 				character->setState(character->Idle);
 				character->setPosition(CharacterPosition.x, tilePos.y - BUFFER);
 				character->setVelocity(character->getVelocity().x, 0);
-			}			
+			}
 		}
 		else
-			character->setPosition(CharacterPosition);		
+			character->setPosition(CharacterPosition);
 	}
 
 	CommandeQueue & World::getCommandQueue()
@@ -238,18 +243,18 @@ namespace GEX
 		int tileToTheBottomPlayerOne = _map->getTileOnBottom(_characterOne->getPosition());
 
 		if (_map->isItSolid(tileToTheRightPlayerOne) && _characterOne->isMovingRight() == true)
-		{			
+		{
 			adapPlayerPositionFromTileRight(tileToTheRightPlayerOne, _characterOne);
 		}
 
 		else if (_map->isItSolid(tileToTheLeftPlayerOne) && _characterOne->isMovingLeft() == true)
 		{
-			
-				adapPlayerPositionFromTileLeft(tileToTheLeftPlayerOne, _characterOne);
+
+			adapPlayerPositionFromTileLeft(tileToTheLeftPlayerOne, _characterOne);
 		}
 
-		if(_map->isItSolid(tileToTheBottomPlayerOne))
-		adapPlayerPositionFromTileBottom(tileToTheBottomPlayerOne, _characterOne);
+		if (_map->isItSolid(tileToTheBottomPlayerOne))
+			adapPlayerPositionFromTileBottom(tileToTheBottomPlayerOne, _characterOne);
 
 
 		// handle collision for player two
@@ -278,7 +283,7 @@ namespace GEX
 
 		// for each collision do someting
 		for (auto pair : collisionPairs)
-		{		
+		{
 			// check if the bullet from one character is in contact with the other
 			if (matchesCategories(pair, Category::PlayerCharacterOne, Category::BulletPlayerTwo) ||
 				matchesCategories(pair, Category::PlayerCharacterTwo, Category::BulletPlayerOne))
@@ -301,9 +306,24 @@ namespace GEX
 				auto& playerTwo = static_cast<Character&>(*pair.second);
 
 				if (_characterOne->isStateAttack())
-					playerTwo.damage(playerOne.getAttackDamage());
+				{
+					if (_characterTwo->isBlocking())
+					{
+						playerTwo.damage(0.15);
+					}
+					else
+						playerTwo.damage(playerOne.getAttackDamage());
+				}
 				if (_characterTwo->isStateAttack())
-					playerOne.damage(playerTwo.getAttackDamage());				
+				{
+					if (_characterOne->isBlocking())
+					{
+						playerOne.damage(0.15);
+					}
+					else
+						playerOne.damage(playerTwo.getAttackDamage());
+				}
+				
 			}
 
 		}

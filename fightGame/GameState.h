@@ -40,6 +40,7 @@ namespace GEX
 	private:
 		World               _world;
 		PlayerControl&      _player;
+		sf::Sprite			_topIcon;
 
 	};
 }

@@ -16,6 +16,7 @@ namespace GEX
 	const int WIDTH = 151;
 	const float GRAVITY = 8;
 	const int MAXHEALTH = 300;
+	const int JUMP = -450;
 
 	Character::Character(Type type, Category::Type category) :
 		Entity(table.at(type).health),
@@ -285,7 +286,7 @@ namespace GEX
 		{
 			_state = State::Jump;
 			_animations[State::Jump]->start();
-			this->accelerate(0, -500);
+			this->accelerate(0, JUMP);
 			_isJumping = true;		
 			_isRunningSoungStop = true;
 		}
@@ -343,6 +344,11 @@ namespace GEX
 		_state = state;
 	}
 
+	bool Character::isMarkedForRemoval() const
+	{
+		return false;
+	}
+
 	void Character::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
 	{		
 		if (_category == Category::PlayerCharacterTwo)
@@ -387,11 +393,7 @@ namespace GEX
 		}
 		else if (_state == State::Block)
 		{
-			//if (_animations[_state]->getNumberOfCurrentFrame() < _animations[_state]->getNumberOfFrames())
 				_sprite.setTextureRect(_animations.at(_state)->update(dt));
-
-			/*if (_animations[_state]->getNumberOfCurrentFrame() == _animations[_state]->getNumberOfFrames() - 1)
-				_state = State::Idle;*/
 		}
 
 		else if (this->getVelocity().y > GRAVITY)
@@ -417,6 +419,11 @@ namespace GEX
 		else if (_state == State::Idle)
 		{
 			this->accelerate(velocity.x, GRAVITY); 
+		}
+
+		if (this->getHealth() <= 0)
+		{
+			_state = State::Dead;
 		}
 		
 

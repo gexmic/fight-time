@@ -75,7 +75,7 @@ namespace GEX
 		_hitpoints += points;
 	}
 
-	void Entity::damage(int points)
+	void Entity::damage(double points)
 	{
 		_hitpoints -= points;
 	}

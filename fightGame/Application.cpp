@@ -54,6 +54,7 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::KnightEntity,          "../Media/Textures/KnightMouvement.png");
 		TextureHolder::getInstance().load(TextureID::NinjaEntity,           "../Media/Textures/NinjaMouvement.png");
 		TextureHolder::getInstance().load(TextureID::NinjaGirlEntity,		"../Media/Textures/NinjaGirlMouvement.png");
+		TextureHolder::getInstance().load(TextureID::FightTimeLogo,         "../Media/Textures/FightTimeLogo.png");
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statsText.setPosition(5.f, 5.f);

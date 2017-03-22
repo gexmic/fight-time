@@ -60,6 +60,7 @@ namespace GEX
 		bool											isPayerOne() const;
 		bool											isBlocking()const;
 		void											setState(State state);
+		virtual bool									isMarkedForRemoval() const override;
 
 	private:
 		void											drawCurrent(sf::RenderTarget& target, sf::RenderStates state) const override;
