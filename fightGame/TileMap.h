@@ -34,7 +34,20 @@ namespace GEX
 			Fourteen,
 			Fifteen,
 			Sixteen,
-			Bush
+			Bush1,
+			Bush2,
+			Cactus1,
+			Cactus2,
+			Cactus3,
+			Crate,
+			Grass1,
+			Grass2,
+			Sign,
+			SignArrow,
+			Skeleton,
+			Stone,
+			StoneBlock,
+			Tree
 		};
 
 	public:
@@ -77,7 +90,20 @@ namespace GEX
 		mutable sf::Sprite		_tile14;
 		mutable sf::Sprite		_tile15;
 		mutable sf::Sprite		_tile16;
-		mutable sf::Sprite		_tile17;
+		mutable sf::Sprite		_tileObject1;
+		mutable sf::Sprite		_tileObject2;
+		mutable sf::Sprite		_tileObject3;
+		mutable sf::Sprite		_tileObject4;
+		mutable sf::Sprite		_tileObject5;
+		mutable sf::Sprite		_tileObject6;
+		mutable sf::Sprite		_tileObject7;
+		mutable sf::Sprite		_tileObject8;
+		mutable sf::Sprite		_tileObject9;
+		mutable sf::Sprite		_tileObject10;
+		mutable sf::Sprite		_tileObject11;
+		mutable sf::Sprite		_tileObject12;
+		mutable sf::Sprite		_tileObject13;
+		mutable sf::Sprite		_tileObject14;
 	};
 }
 

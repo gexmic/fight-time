@@ -29,6 +29,7 @@ world class
 #include "TileMap.h"
 #include "Character.h"
 #include <iostream>
+#include "Utility.h"
 
 namespace GEX
 {
@@ -45,10 +46,13 @@ namespace GEX
 		_sceneGraph(),
 		_sceneLayers(),
 		_commandQueue(),
-		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f)
+		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f),
+		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo))
 
 	{
 		buildScene();
+		centerOrigin(_topIcon);
+		_topIcon.setPosition(window.getSize().x / 2, 75);
 	}
 
 	void World::update(sf::Time deltaTime)
@@ -78,6 +82,7 @@ namespace GEX
 	{
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
+		_window.draw(_topIcon);
 
 	}
 
@@ -87,13 +92,13 @@ namespace GEX
 		const float borderDistance = BUFFER;
 
 		// adapte position for player
-		
+
 		sf::Vector2f playerPosition = character->getPosition();
 		playerPosition.x = std::max(playerPosition.x, viewBounds.left + borderDistance);
 		playerPosition.x = std::min(playerPosition.x, viewBounds.left + viewBounds.width - borderDistance);
 		playerPosition.y = std::max(playerPosition.y, viewBounds.top + borderDistance);
 		playerPosition.y = std::min(playerPosition.y, viewBounds.top + viewBounds.height - borderDistance);
-		character->setPosition(playerPosition);	
+		character->setPosition(playerPosition);
 	}
 
 	void World::adapPlayerPositionFromTileRight(int tileNumber, Character* character)
@@ -141,7 +146,7 @@ namespace GEX
 		// adapte position for player one
 		sf::Vector2f CharacterPosition = character->getPosition();
 
-		
+
 		if (CharacterPosition.y + BUFFER >= tilePos.y)
 		{
 			if (character->isStateJump() == false)
@@ -157,10 +162,9 @@ namespace GEX
 				character->setPosition(CharacterPosition.x, tilePos.y - BUFFER);
 				character->setVelocity(character->getVelocity().x, 0);
 			}
-			
 		}
 		else
-			character->setPosition(CharacterPosition);		
+			character->setPosition(CharacterPosition);
 	}
 
 	CommandeQueue & World::getCommandQueue()
@@ -202,35 +206,11 @@ namespace GEX
 		_characterOne->setPosition(300, 300);
 		_sceneLayers[Ground]->attachChild(std::move(playerOne));
 
-		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Katoka, Category::Type::PlayerCharacterTwo));
+		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Azerty, Category::Type::PlayerCharacterTwo));
 		_characterTwo = playerTwo.get();
 		_characterTwo->setPosition(800, 300);
 		_characterTwo->setScale({ -1, 1 });
 		_sceneLayers[Ground]->attachChild(std::move(playerTwo));
-
-
-		// Add the background sprite to the scene
-		//sf::Texture& finish = TextureHolder::getInstance().get(TextureID::FinishLine);
-		//sf::IntRect FinishRect(0, 0, 1024, 76);
-		//std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finish, FinishRect));
-		//_sceneLayers[FinishLine]->attachChild(std::move(finishLine));
-
-
-
-		////particle system
-		//std::unique_ptr<ParticuleNode> smokeNode(new ParticuleNode(Particule::Type::Smoke));
-		//_sceneLayers[Air]->attachChild(std::move(smokeNode));
-
-		//std::unique_ptr<ParticuleNode> fireNode(new ParticuleNode(Particule::Type::Propellant));
-		//_sceneLayers[Air]->attachChild(std::move(fireNode));
-
-
-		//// Add player's aircraft
-		//std::unique_ptr<Airplaine> leader(new Airplaine(Airplaine::Type::Eagle));
-		//_playerAircraft = leader.get();
-		//_playerAircraft->setPosition(_spawnPosition);
-		//_playerAircraft->setVelocity(0.f, _scrollSpeed);
-		//_sceneLayers[Air]->attachChild(std::move(leader));
 
 		// add SoundNode
 
@@ -263,18 +243,18 @@ namespace GEX
 		int tileToTheBottomPlayerOne = _map->getTileOnBottom(_characterOne->getPosition());
 
 		if (_map->isItSolid(tileToTheRightPlayerOne) && _characterOne->isMovingRight() == true)
-		{			
+		{
 			adapPlayerPositionFromTileRight(tileToTheRightPlayerOne, _characterOne);
 		}
 
 		else if (_map->isItSolid(tileToTheLeftPlayerOne) && _characterOne->isMovingLeft() == true)
 		{
-			
-				adapPlayerPositionFromTileLeft(tileToTheLeftPlayerOne, _characterOne);
+
+			adapPlayerPositionFromTileLeft(tileToTheLeftPlayerOne, _characterOne);
 		}
 
-		if(_map->isItSolid(tileToTheBottomPlayerOne))
-		adapPlayerPositionFromTileBottom(tileToTheBottomPlayerOne, _characterOne);
+		if (_map->isItSolid(tileToTheBottomPlayerOne))
+			adapPlayerPositionFromTileBottom(tileToTheBottomPlayerOne, _characterOne);
 
 
 		// handle collision for player two
@@ -296,6 +276,57 @@ namespace GEX
 
 		if (_map->isItSolid(tileToTheBottomPlayerTwo))
 			adapPlayerPositionFromTileBottom(tileToTheBottomPlayerTwo, _characterTwo);
+
+		// build a list of all pair of colloding scenenode all pair
+		std::set<SceneNode::Pair> collisionPairs;
+		_sceneGraph.checkSceneCollision(_sceneGraph, collisionPairs);
+
+		// for each collision do someting
+		for (auto pair : collisionPairs)
+		{
+			// check if the bullet from one character is in contact with the other
+			if (matchesCategories(pair, Category::PlayerCharacterOne, Category::BulletPlayerTwo) ||
+				matchesCategories(pair, Category::PlayerCharacterTwo, Category::BulletPlayerOne))
+			{
+				auto& player = static_cast<Character&> (*pair.first);
+				auto& projectile = static_cast<Projectile&>(*pair.second);
+
+				if (!player.isBlocking())
+				{
+					player.damage(projectile.getHitPoint());
+				}
+				projectile.destroy();
+			}
+
+			// check if two player colide and check the state to determin if the player is attacking or not
+
+			if (matchesCategories(pair, Category::PlayerCharacterOne, Category::PlayerCharacterTwo))
+			{
+				auto& playerOne = static_cast<Character&> (*pair.first);
+				auto& playerTwo = static_cast<Character&>(*pair.second);
+
+				if (_characterOne->isStateAttack())
+				{
+					if (_characterTwo->isBlocking())
+					{
+						playerTwo.damage(0.15);
+					}
+					else
+						playerTwo.damage(playerOne.getAttackDamage());
+				}
+				if (_characterTwo->isStateAttack())
+				{
+					if (_characterOne->isBlocking())
+					{
+						playerOne.damage(0.15);
+					}
+					else
+						playerOne.damage(playerTwo.getAttackDamage());
+				}
+				
+			}
+
+		}
 
 	}
 

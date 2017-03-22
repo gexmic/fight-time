@@ -33,7 +33,8 @@ namespace GEX
 			ParticalSystem			= 1 << 6,
 			SoundEffet				= 1 << 7,
 			Map						= 1 << 8,
-
+			BulletPlayerOne			= 1 << 9,
+			BulletPlayerTwo			= 1 << 10,
 		
 			Projectile			= AlliedProjectile | EnemyProjectile,
 			//ThingsPlayerCollideWith = EnnemyAircraft | EnemyProjectile | Pickup,

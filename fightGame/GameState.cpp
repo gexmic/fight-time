@@ -25,8 +25,10 @@ namespace GEX
 		State(stack, context),
 		_world(*context.window, *context.soundEffects),
 		_player(*context.player)
+		
 	{
 		context.music->play(MusicID::DessertMusic);
+		
 	}
 
 	void GameState::draw()

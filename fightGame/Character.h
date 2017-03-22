@@ -14,7 +14,7 @@ namespace GEX
 	class Character : public Entity
 	{
 	public:
-		enum Type{
+		enum  Type{
 			// ana Adventure girl, sir thomas wale Knight, brain eater men zombie
 			// Fungi girl zombie, Azerty robot, Zumo men ninja, Katoka girl ninja
 			// Sante santa, and Jack halloween
@@ -29,7 +29,7 @@ namespace GEX
 			Jack
 		};
 		
-		enum State{
+		enum  State{
 			Idle,
 			Jump,
 			Melee,
@@ -45,9 +45,11 @@ namespace GEX
 		unsigned int									getCategory() const override;
 		float											getMaxSpeed() const;
 		sf::FloatRect									getBoundingRect() const override;
-		void											setHealth();
 		int												getHealth()const;
-		bool											isStateJump();
+		int												getAttackDamage() const;
+		bool											isStateAttack()const;
+		bool											isStateJump() const;
+		bool											isAttack() const;
 		void											move(float x, float y);
 		void											fire();
 		void											jump();
@@ -55,7 +57,10 @@ namespace GEX
 		void											block();
 		bool											isMovingRight() const;
 		bool											isMovingLeft();
+		bool											isPayerOne() const;
+		bool											isBlocking()const;
 		void											setState(State state);
+		virtual bool									isMarkedForRemoval() const override;
 
 	private:
 		void											drawCurrent(sf::RenderTarget& target, sf::RenderStates state) const override;
@@ -70,7 +75,8 @@ namespace GEX
 		void											playLocalSound(CommandeQueue & commands, SoundEffectID effect);
 		void											playLocalSoundRunning(CommandeQueue& commands, SoundEffectID effect);
 		void											stopLocalSoundRunning(CommandeQueue& commands, SoundEffectID effect);
-		void											createBullets(SceneNode& node, Projectile::Type type, float xOffSet, float yOffSet) const;
+		void											createProjectile(SceneNode& node, Projectile::Type type, float xOffSet, float yOffSet) const;
+		void											createBullets(SceneNode& node) const;
 
 	private:
 		Type											_type;
@@ -89,9 +95,9 @@ namespace GEX
 		Command											_fireCommand;
 		std::size_t										_fireRateLevel;
 		Category::Type									_category;
-		int												_health;
 		sf::RectangleShape								_healthBarMaxHealth;
 		mutable sf::RectangleShape						_healthBarCurrentHealth;
+		Projectile::CharacterTypeBullet					_characterTypeBullet;
 
 		std::map<State, std::unique_ptr<Animation>>		_animations;
 	};

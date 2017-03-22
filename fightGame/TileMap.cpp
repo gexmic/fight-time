@@ -5,15 +5,7 @@
 namespace GEX
 {
 	const std::map<TileMap::Tile, MapDessertData> table = initializeMapData();
-	std::vector<int> _dessertMap =
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 14, 15, 16, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 1, 3, 0, 0, 0,
-		0, 1, 2, 2, 2, 5, 5, 2, 3, 0,
-		0, 4, 5, 5, 5, 5, 5, 5, 6, 0,
-		0, 4, 5, 5, 5, 5, 5, 5, 6, 0 };
+	;
 
 	TileMap::TileMap(Type type) :
 		_type(type),
@@ -35,7 +27,21 @@ namespace GEX
 		_tile14(TextureHolder::getInstance().get(table.at(Tile::Fourteen).texture), table.at(Tile::Fourteen).location),
 		_tile15(TextureHolder::getInstance().get(table.at(Tile::Fifteen).texture), table.at(Tile::Fifteen).location),
 		_tile16(TextureHolder::getInstance().get(table.at(Tile::Sixteen).texture), table.at(Tile::Sixteen).location),
-		_tile17(TextureHolder::getInstance().get(table.at(Tile::Bush).texture), table.at(Tile::Bush).location)
+		_tileObject1(TextureHolder::getInstance().get(table.at(Tile::Bush1).texture), table.at(Tile::Bush1).location),
+		_tileObject2(TextureHolder::getInstance().get(table.at(Tile::Bush2).texture), table.at(Tile::Bush2).location),
+		_tileObject3(TextureHolder::getInstance().get(table.at(Tile::Cactus1).texture), table.at(Tile::Cactus1).location),
+		_tileObject4(TextureHolder::getInstance().get(table.at(Tile::Cactus2).texture), table.at(Tile::Cactus2).location),
+		_tileObject5(TextureHolder::getInstance().get(table.at(Tile::Cactus3).texture), table.at(Tile::Cactus3).location),
+		_tileObject6(TextureHolder::getInstance().get(table.at(Tile::Crate).texture), table.at(Tile::Crate).location),
+		_tileObject7(TextureHolder::getInstance().get(table.at(Tile::Grass1).texture), table.at(Tile::Grass1).location),
+		_tileObject8(TextureHolder::getInstance().get(table.at(Tile::Grass2).texture), table.at(Tile::Grass2).location),
+		_tileObject9(TextureHolder::getInstance().get(table.at(Tile::Sign).texture), table.at(Tile::Sign).location),
+		_tileObject10(TextureHolder::getInstance().get(table.at(Tile::SignArrow).texture), table.at(Tile::SignArrow).location),
+		_tileObject11(TextureHolder::getInstance().get(table.at(Tile::Skeleton).texture), table.at(Tile::Skeleton).location),
+		_tileObject12(TextureHolder::getInstance().get(table.at(Tile::Stone).texture), table.at(Tile::Stone).location),
+		_tileObject13(TextureHolder::getInstance().get(table.at(Tile::StoneBlock).texture), table.at(Tile::StoneBlock).location),
+		_tileObject14(TextureHolder::getInstance().get(table.at(Tile::Tree).texture), table.at(Tile::Tree).location)
+
 
 	{
 		loadMap();
@@ -192,8 +198,8 @@ namespace GEX
 				target.draw(_tile16, state);
 				break;
 			case 17:
-				_tile17.setPosition(x, y+54);
-				target.draw(_tile17, state);
+				_tileObject1.setPosition(x, y);
+				target.draw(_tileObject1, state);
 				break;
 			default:
 				break;
@@ -206,11 +212,11 @@ namespace GEX
 		_dessertMap =
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 14, 15, 16, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 5, 0, 0, 0,
-			1, 1, 1, 2, 2, 5, 5, 2, 3, 1,
-			0, 4, 5, 5, 5, 5, 5, 5, 6, 0,
-			0, 4, 5, 5, 5, 5, 5, 5, 6, 0 };
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			15, 16, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			1, 2, 2, 2, 2, 2, 2, 2, 2, 3,
+			4, 5, 5, 5, 5, 5, 5, 5, 5, 6 };
 	}
 }

@@ -11,14 +11,15 @@
 namespace GEX
 {
 	const std::map<Character::Type, CharacterData> table = initializeCharacterData();
-	const std::map<Projectile::Type, ProjectileDate> tableProjectil = initializeProjectileDate();
+	const std::map<Projectile::CharacterTypeBullet, ProjectileDate> tableProjectil = initializeProjectileDate();
 	const int HEIGHT = 151;
 	const int WIDTH = 151;
 	const float GRAVITY = 8;
 	const int MAXHEALTH = 300;
+	const int JUMP = -450;
 
 	Character::Character(Type type, Category::Type category) :
-		Entity(),
+		Entity(table.at(type).health),
 		_type(type),
 		_sprite(TextureHolder::getInstance().get(table.at(type).texture), table.at(type).location),
 		_state(State::Idle),
@@ -29,8 +30,7 @@ namespace GEX
 		_category(category),
 		_isRunningSoungPlay(false),
 		_isRunningSoungStop(false),
-		_isAttacking(false),
-		_health(200)
+		_isAttacking(false)
 		
 	{
 		centerOrigin(_sprite);
@@ -38,20 +38,35 @@ namespace GEX
 		_fireCommand.category = Category::SceneGroundLayer;
 		_fireCommand.action = [this](SceneNode& node, sf::Time)
 		{
-			this->createBullets(node, Projectile::Type::AnaBullet, 0.0f, 0.2f);
+			if(_type == Type::Ana)
+				this->createBullets(node);
+			if (_type == Type::Azerty)
+				this->createBullets(node);
 		};
 
 		std::string caracter;
 		if (_type == Type::Ana)
+		{
 			caracter = "AnaAtlas";
+			_characterTypeBullet = Projectile::CharacterTypeBullet::AnaBullet;
+		}
 		else if (_type == Type::Azerty)
+		{
 			caracter = "RobotAtlas";
+			_characterTypeBullet = Projectile::CharacterTypeBullet::RobotBullet;
+		}
 		else if (_type == Type::SirThomasWale)
 			caracter = "KnightAtlas";
 		else if (_type == Type::Katoka)
+		{
 			caracter = "NinjaAtlas";
+			_characterTypeBullet = Projectile::CharacterTypeBullet::NinjaBullet;
+		}
 		else if (_type == Type::Fungi)
-			caracter = "NinjaAtlass";
+		{
+			caracter = "NinjaGirlAtlas";
+			_characterTypeBullet = Projectile::CharacterTypeBullet::NinjaBullet;
+		}
 
 		JsonFrameParser frame("../Media/Textures/"+caracter+".json");
 
@@ -100,7 +115,7 @@ namespace GEX
 			_healthBarMaxHealth.setOutlineColor(sf::Color::Black);
 			_healthBarMaxHealth.setOutlineThickness(2);
 
-			_healthBarCurrentHealth.setSize(sf::Vector2f(_health, 25));
+			_healthBarCurrentHealth.setSize(sf::Vector2f(getHitPoint(), 25));
 			_healthBarCurrentHealth.setPosition(sf::Vector2f(100, 50));
 			_healthBarCurrentHealth.setFillColor(sf::Color::Green);
 		}
@@ -112,7 +127,7 @@ namespace GEX
 			_healthBarMaxHealth.setOutlineColor(sf::Color::Black);
 			_healthBarMaxHealth.setOutlineThickness(2);
 
-			_healthBarCurrentHealth.setSize(sf::Vector2f(_health, 25));
+			_healthBarCurrentHealth.setSize(sf::Vector2f(getHitPoint(), 25));
 			_healthBarCurrentHealth.setPosition(sf::Vector2f(860, 50));
 			_healthBarCurrentHealth.setFillColor(sf::Color::Red);
 		}
@@ -134,21 +149,39 @@ namespace GEX
 		return getWorldTransform().transformRect(_sprite.getGlobalBounds());
 	}
 
-	void Character::setHealth()
-	{
-	}
+	
 
 	int Character::getHealth() const
 	{
-		return _health;
+		return getHitPoint();
 	}
 
-	bool Character::isStateJump()
+	int Character::getAttackDamage() const
+	{
+		return table.at(_type).attackDamage;
+	}
+
+	bool Character::isStateAttack() const
+	{
+		if (_state == State::Melee)
+			return true;
+		else
+			return false;
+	}
+
+	
+
+	bool Character::isStateJump()const
 	{
 		if (_state == State::Jump)
 			return true;
 		else
 			return false;
+	}
+
+	bool Character::isAttack() const
+	{
+		return _isAttacking;
 	}
 
 	void Character::move(float x, float y)
@@ -253,7 +286,7 @@ namespace GEX
 		{
 			_state = State::Jump;
 			_animations[State::Jump]->start();
-			this->accelerate(0, -500);
+			this->accelerate(0, JUMP);
 			_isJumping = true;		
 			_isRunningSoungStop = true;
 		}
@@ -293,9 +326,27 @@ namespace GEX
 		return _moveLeft;
 	}
 
+	bool Character::isPayerOne() const
+	{
+		return _category == Category::Type::PlayerCharacterOne;
+	}
+
+	bool Character::isBlocking() const
+	{
+		if (_state == State::Block)
+			return true;
+		else
+			return false;
+	}
+
 	void Character::setState(State state)
 	{
 		_state = state;
+	}
+
+	bool Character::isMarkedForRemoval() const
+	{
+		return false;
 	}
 
 	void Character::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
@@ -342,11 +393,7 @@ namespace GEX
 		}
 		else if (_state == State::Block)
 		{
-			//if (_animations[_state]->getNumberOfCurrentFrame() < _animations[_state]->getNumberOfFrames())
 				_sprite.setTextureRect(_animations.at(_state)->update(dt));
-
-			/*if (_animations[_state]->getNumberOfCurrentFrame() == _animations[_state]->getNumberOfFrames() - 1)
-				_state = State::Idle;*/
 		}
 
 		else if (this->getVelocity().y > GRAVITY)
@@ -373,6 +420,11 @@ namespace GEX
 		{
 			this->accelerate(velocity.x, GRAVITY); 
 		}
+
+		if (this->getHealth() <= 0)
+		{
+			_state = State::Dead;
+		}
 		
 
 		movementUpdate(dt);
@@ -387,10 +439,10 @@ namespace GEX
 	{
 		if (_category == Category::PlayerCharacterTwo)
 		{
-			_healthBarCurrentHealth.setSize(sf::Vector2f(MAXHEALTH - _health, 25));
+			_healthBarCurrentHealth.setSize(sf::Vector2f(MAXHEALTH - getHitPoint(), 25));
 		}
 		else
-		_healthBarCurrentHealth.setSize(sf::Vector2f(_health, 25));
+		_healthBarCurrentHealth.setSize(sf::Vector2f(getHitPoint(), 25));
 	}
 	void Character::checkProjectileLaunch(sf::Time dt, CommandeQueue & commands)
 	{
@@ -476,10 +528,10 @@ namespace GEX
 		{node.stopSound(effect); });
 		commands.push(command);
 	}
-	void Character::createBullets(SceneNode& node, Projectile::Type type, float xOffSet, float yOffSet) const
+	void Character::createProjectile(SceneNode& node, Projectile::Type type, float xOffSet, float yOffSet) const
 	{
 		// node is the ScreenAirLayer node that the command was targeted to
-		std::unique_ptr<Projectile> projectile(new Projectile(type));
+		std::unique_ptr<Projectile> projectile(new Projectile(type, _characterTypeBullet));
 
 		sf::Vector2f offset( 40 , -5);
 		sf::Vector2f velocity(projectile->getMaxSpeed(), 0);
@@ -490,5 +542,12 @@ namespace GEX
 		else if (_moveLeft)
 			projectile->setVelocity(-velocity);
 		node.attachChild(std::move(projectile));
+	}
+
+	void Character::createBullets(SceneNode & node) const
+	{
+		Projectile::Type type = isPayerOne() ? Projectile::Type::playerOneBullet : Projectile::Type::playerTwoBullet;
+
+		createProjectile(node, type, 40, -5);
 	}
 }

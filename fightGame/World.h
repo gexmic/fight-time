@@ -96,6 +96,7 @@ namespace GEX
 		Character*								_characterOne;
 		Character*								_characterTwo;
 		sf::FloatRect							_worldBounds;
+		sf::Sprite								_topIcon;
 	};
 }
 
