@@ -40,8 +40,9 @@ namespace GEX
 	enum class FightStatus
 	{
 		Fight,
-		PlayerOneRoundOneWin,
-		PlayerTwoRoundOneWin,
+		RoundOne,
+		RoundTwo,
+		RoundThree,
 		PlayerOneWin,
 		PlayerTwoWin
 	};

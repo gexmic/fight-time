@@ -34,7 +34,7 @@ namespace GEX
 	};
 
 	PlayerControl::PlayerControl() :
-		_fightStatus(FightStatus::Fight)
+		_fightStatus(FightStatus::RoundOne)
 	{
 		initializaKeyBindings();
 		initializaActionBindings();

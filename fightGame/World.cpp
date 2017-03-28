@@ -47,9 +47,7 @@ namespace GEX
 		_sceneLayers(),
 		_commandQueue(),
 		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f),
-		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo)),
-		_playerOneNumOfWin(1),
-		_playerTwoNumOfWin(0)
+		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo))
 		
 
 
@@ -94,13 +92,17 @@ namespace GEX
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
 		_window.draw(_topIcon);
+
+		// player one
+		// draw the circle that show how much round win the player have
+		// it will draw a transparent cicle and put color in it if the player have win a round
 		for (int i = 0; i < 2; ++i)
 		{
 			sf::Vector2f tmp(380 - i * 30.f, 85.f);
 			_roundWinShape.setPosition(tmp);
 			_roundWinShape.setFillColor(sf::Color::Transparent);
 			_window.draw(_roundWinShape);
-			for (int i = 0; i < _playerOneNumOfWin; ++i)
+			for (int i = 0; i < playerOneNumWin(); ++i)
 			{
 				sf::Vector2f tmp(380 - i * 30.f, 85.f);
 				_roundWinShape.setPosition(tmp);
@@ -108,7 +110,9 @@ namespace GEX
 				_window.draw(_roundWinShape);
 			}
 		}
-
+		// player two
+		// draw the circle that show how much round win the player have
+		// it will draw a transparent cicle and put color in it if the player have win a round
 		for (int i = 0; i < 2; ++i)
 		{
 			sf::Vector2f tmp(860 + i * 30.f, 85.f);
@@ -116,7 +120,7 @@ namespace GEX
 			_roundWinShape.setFillColor(sf::Color::Transparent);
 			_window.draw(_roundWinShape);
 
-			for (int i = 0; i < _playerTwoNumOfWin; ++i)
+			for (int i = 0; i < playerTwoNumWin(); ++i)
 			{
 				sf::Vector2f tmp(860 + i * 30.f, 85.f);
 				_roundWinShape.setPosition(tmp);
@@ -221,6 +225,11 @@ namespace GEX
 	int World::playerTwoNumWin()
 	{
 		return _characterOne->getNumberofLost();
+	}
+
+	bool World::isRoundWin()
+	{			
+		return _characterOne->getHealth() <= 0 || _characterTwo->getHealth() <= 0;
 	}
 
 	void World::buildScene()
@@ -363,21 +372,47 @@ namespace GEX
 
 				if (_characterOne->isStateAttack())
 				{
-					if (_characterTwo->isBlocking())
+					if (_characterOne->isMovingRight() && _characterTwo->getPosition().x > _characterOne->getPosition().x)
 					{
-						playerTwo.damage(0.15);
+						if (_characterTwo->isBlocking())
+						{
+							playerTwo.damage(0.15);
+						}
+						else
+							playerTwo.damage(playerOne.getAttackDamage());
 					}
-					else
-						playerTwo.damage(playerOne.getAttackDamage());
+					if (_characterOne->isMovingLeft() && _characterTwo->getPosition().x < _characterOne->getPosition().x)
+					{
+						if (_characterTwo->isBlocking())
+						{
+							playerTwo.damage(0.15);
+						}
+						else
+							playerTwo.damage(playerOne.getAttackDamage());
+					}
 				}
+				///////////////////////////////////
 				if (_characterTwo->isStateAttack())
 				{
-					if (_characterOne->isBlocking())
+					if (_characterTwo->isMovingRight() && _characterOne->getPosition().x > _characterTwo->getPosition().x)
 					{
-						playerOne.damage(0.15);
+						if (_characterOne->isBlocking())
+						{
+							playerOne.damage(0.15);
+						}
+						else
+							playerOne.damage(playerTwo.getAttackDamage());
 					}
-					else
-						playerOne.damage(playerTwo.getAttackDamage());
+
+					if (_characterTwo->isMovingLeft() && _characterOne->getPosition().x < _characterTwo->getPosition().x)
+					{
+						if (_characterOne->isBlocking())
+						{
+							playerOne.damage(0.15);
+						}
+						else
+							playerOne.damage(playerTwo.getAttackDamage());
+					}
 				}
 				
 			}

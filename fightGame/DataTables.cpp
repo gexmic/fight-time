@@ -162,7 +162,7 @@ namespace GEX
 		data[TileMap::Tile::Bush2].hitPoint = 0;
 
 		data[TileMap::Tile::Cactus1].texture = TextureID::MapDessertEntety;
-		data[TileMap::Tile::Cactus1].location = sf::IntRect(1, 342, 108, 11);
+		data[TileMap::Tile::Cactus1].location = sf::IntRect(1, 342, 108, 111);
 		data[TileMap::Tile::Cactus1].solid = false;
 		data[TileMap::Tile::Cactus1].hitPoint = 0;
 
@@ -197,7 +197,7 @@ namespace GEX
 		data[TileMap::Tile::Sign].hitPoint = 0;
 
 		data[TileMap::Tile::SignArrow].texture = TextureID::MapDessertEntety;
-		data[TileMap::Tile::SignArrow].location = sf::IntRect(260, 4, 84, 87);
+		data[TileMap::Tile::SignArrow].location = sf::IntRect(260, 54, 84, 87);
 		data[TileMap::Tile::SignArrow].solid = false;
 		data[TileMap::Tile::SignArrow].hitPoint = 0;
 

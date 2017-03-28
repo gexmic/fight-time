@@ -27,16 +27,13 @@ namespace GEX
 			SceneGroundLayer		= 1 << 0,
 			PlayerCharacterOne		= 1 << 1,
 			PlayerCharacterTwo		= 1 << 2,
-			EnnemyCharacter			= 1 << 3,
-			AlliedProjectile		= 1 << 4,
-			EnemyProjectile			= 1 << 5,
-			ParticalSystem			= 1 << 6,
-			SoundEffet				= 1 << 7,
-			Map						= 1 << 8,
-			BulletPlayerOne			= 1 << 9,
-			BulletPlayerTwo			= 1 << 10,
+			ParticalSystem			= 1 << 3,
+			SoundEffet				= 1 << 4,
+			Map						= 1 << 5,
+			BulletPlayerOne			= 1 << 6,
+			BulletPlayerTwo			= 1 << 7,
 		
-			Projectile			= AlliedProjectile | EnemyProjectile,
+			Projectile			= BulletPlayerOne | BulletPlayerTwo,
 			//ThingsPlayerCollideWith = EnnemyAircraft | EnemyProjectile | Pickup,
 			//ThingsEnemyColideWith = PlayerAircraft | AlliedAircraft | AlliedProjectile
 

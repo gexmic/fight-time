@@ -133,6 +133,7 @@
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="PlayerControl.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="RoundState.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SoundBufferHolder.cpp" />
     <ClCompile Include="SoundNode.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="PlayerControl.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ResourceIdentifiers.h" />
+    <ClInclude Include="RoundState.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="SoundBufferHolder.h" />
     <ClInclude Include="SoundNode.h" />

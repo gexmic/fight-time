@@ -198,8 +198,52 @@ namespace GEX
 				target.draw(_tile16, state);
 				break;
 			case 17:
-				_tileObject1.setPosition(x, y);
+				_tileObject1.setPosition(x, y+50);
 				target.draw(_tileObject1, state);
+				break;
+			case 18:
+				_tileObject2.setPosition(x, y+55);
+				target.draw(_tileObject2, state);
+				break;
+			case 19:
+				_tileObject3.setPosition(x, y + 55);
+				target.draw(_tileObject3, state);
+				break;
+			case 20:
+				_tileObject4.setPosition(x, y +100);
+				target.draw(_tileObject4, state);
+				break;
+			case 21:
+				_tileObject6.setPosition(x, y + 25);
+				target.draw(_tileObject6, state);
+				break;
+			case 22:
+				_tileObject7.setPosition(x, y+80);
+				target.draw(_tileObject7, state);
+				break;
+			case 23:
+				_tileObject9.setPosition(x, y + 80);
+				target.draw(_tileObject9, state);
+				break;
+			case 24:
+				_tileObject10.setPosition(x, y+50 );
+				target.draw(_tileObject10, state);
+				break;
+			case 25:
+				_tileObject11.setPosition(x, y + 80);
+				target.draw(_tileObject11, state);
+				break;
+			case 26:
+				_tileObject14.setPosition(x - 100 , y - 125);
+				target.draw(_tileObject14, state);
+				break;
+			case 27:
+				_tileObject5.setPosition(x , y + 35);
+				target.draw(_tileObject5, state);
+				break;
+			case 28:
+				_tileObject12.setPosition(x, y + 60);
+				target.draw(_tileObject12, state);
 				break;
 			default:
 				break;
@@ -211,11 +255,11 @@ namespace GEX
 	{
 		_dessertMap =
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			15, 16, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 24, 0, 27, 22, 0, 0, 0,
+			0, 0, 0, 14, 15, 15, 16, 0, 0, 0,
+			17, 0, 0, 0, 0, 0, 0, 0, 20, 28,
+			15, 16, 0, 0, 0, 0, 0, 0, 14, 15,
+			18, 0, 23, 25, 26, 19, 0, 0, 21, 0,
 			1, 2, 2, 2, 2, 2, 2, 2, 2, 3,
 			4, 5, 5, 5, 5, 5, 5, 5, 5, 6 };
 	}

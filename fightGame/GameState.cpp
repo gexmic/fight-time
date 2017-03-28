@@ -28,6 +28,7 @@ namespace GEX
 		
 	{
 		context.music->play(MusicID::DessertMusic);
+		context.player->setFightStatus(FightStatus::Fight);
 		
 	}
 
@@ -44,6 +45,12 @@ namespace GEX
 		/*_player.setFightStatus(FightStatus::PlayerOneWin);
 		requestStackPush(StateID::GameOver);*/
 		// ///////////////////////////
+		if (_world.isRoundWin())
+		{
+			_player.setFightStatus(FightStatus::RoundTwo);
+			requestStackPop();
+			requestStackPush(StateID::Round);
+		}
 		CommandeQueue& commands = _world.getCommandQueue();
 		_player.handleRealTimeInput(commands);
 

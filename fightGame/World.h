@@ -52,6 +52,8 @@ namespace GEX
 		CommandeQueue&						getCommandQueue();
 		int 								playerOneNumWin();
 		int									playerTwoNumWin();
+		bool								isRoundWin();
+
 
 
 	private:
@@ -87,8 +89,6 @@ namespace GEX
 		sf::FloatRect							_worldBounds;
 		sf::Sprite								_topIcon;
 		mutable sf::CircleShape					_roundWinShape;
-		int										_playerOneNumOfWin;
-		int										_playerTwoNumOfWin;
 											
 	};
 }
