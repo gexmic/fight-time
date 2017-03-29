@@ -60,6 +60,8 @@ namespace GEX
 		bool											isPayerOne() const;
 		bool											isBlocking()const;
 		void											setState(State state);
+		int												getNumberofLost();
+		bool											roundFinished();
 		virtual bool									isMarkedForRemoval() const override;
 
 	private:
@@ -90,6 +92,7 @@ namespace GEX
 		bool											_isAttacking;
 		bool											_isRunningSoungPlay;
 		bool											_isRunningSoungStop;
+		bool											_isRoundFinich;
 		MusicPlayer										_musicRunning;
 		sf::Time										_fireCountdown;
 		Command											_fireCommand;
@@ -98,6 +101,7 @@ namespace GEX
 		sf::RectangleShape								_healthBarMaxHealth;
 		mutable sf::RectangleShape						_healthBarCurrentHealth;
 		Projectile::CharacterTypeBullet					_characterTypeBullet;
+		int												_roundLost;
 
 		std::map<State, std::unique_ptr<Animation>>		_animations;
 	};

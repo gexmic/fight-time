@@ -27,6 +27,7 @@ Application class
 #include "FontHolder.h"
 #include "TitleState.h"
 #include "GameOver.h"
+#include "RoundState.h"
 
 
 namespace GEX
@@ -144,6 +145,7 @@ namespace GEX
 		_stateStack.registerState<GameState>			(StateID::Game);
 		_stateStack.registerState<PauseState>			(StateID::Pause);
 		_stateStack.registerState<GameOverState>		(StateID::GameOver);
+		_stateStack.registerState<RoundState>			(StateID::Round);
 	}
 
 

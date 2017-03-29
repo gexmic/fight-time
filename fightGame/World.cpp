@@ -48,11 +48,19 @@ namespace GEX
 		_commandQueue(),
 		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f),
 		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo))
+		
+
 
 	{
 		buildScene();
 		centerOrigin(_topIcon);
 		_topIcon.setPosition(window.getSize().x / 2, 75);
+		_roundWinShape.setRadius(10);
+		_roundWinShape.setFillColor(sf::Color::Transparent);
+		_roundWinShape.setOutlineThickness(2);
+		_roundWinShape.setOutlineColor(sf::Color::Black);
+
+
 	}
 
 	void World::update(sf::Time deltaTime)
@@ -80,9 +88,46 @@ namespace GEX
 
 	void World::draw()
 	{
+
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
 		_window.draw(_topIcon);
+
+		// player one
+		// draw the circle that show how much round win the player have
+		// it will draw a transparent cicle and put color in it if the player have win a round
+		for (int i = 0; i < 2; ++i)
+		{
+			sf::Vector2f tmp(380 - i * 30.f, 85.f);
+			_roundWinShape.setPosition(tmp);
+			_roundWinShape.setFillColor(sf::Color::Transparent);
+			_window.draw(_roundWinShape);
+			for (int i = 0; i < _playerOneNumWin; ++i)
+			{
+				sf::Vector2f tmp(380 - i * 30.f, 85.f);
+				_roundWinShape.setPosition(tmp);
+				_roundWinShape.setFillColor(sf::Color::Yellow);
+				_window.draw(_roundWinShape);
+			}
+		}
+		// player two
+		// draw the circle that show how much round win the player have
+		// it will draw a transparent cicle and put color in it if the player have win a round
+		for (int i = 0; i < 2; ++i)
+		{
+			sf::Vector2f tmp(860 + i * 30.f, 85.f);
+			_roundWinShape.setPosition(tmp);
+			_roundWinShape.setFillColor(sf::Color::Transparent);
+			_window.draw(_roundWinShape);
+
+			for (int i = 0; i < _playerTwoNumWin; ++i)
+			{
+				sf::Vector2f tmp(860 + i * 30.f, 85.f);
+				_roundWinShape.setPosition(tmp);
+				_roundWinShape.setFillColor(sf::Color::Yellow);
+				_window.draw(_roundWinShape);
+			}
+		}
 
 	}
 
@@ -170,6 +215,42 @@ namespace GEX
 	CommandeQueue & World::getCommandQueue()
 	{
 		return _commandQueue;
+	}
+
+	int World::playerOneNumWin()
+	{
+		return _playerOneNumWin;
+	}
+
+	int World::playerTwoNumWin()
+	{
+		return _playerTwoNumWin;
+	}
+
+	int World::numberOfRoundPLay()
+	{
+		return _playerOneNumWin + _playerTwoNumWin;
+	}
+
+	bool World::isRoundWin()
+	{		
+		if (_characterOne->roundFinished())
+		{
+			_playerTwoNumWin++;
+			return true;
+		}
+		if (_characterTwo->roundFinished())
+		{
+			_playerOneNumWin++;
+			return true;
+		}
+		else
+			return false;
+	}
+
+	void World::resetFight()
+	{
+		buildScene();
 	}
 
 	void World::buildScene()
@@ -295,6 +376,11 @@ namespace GEX
 				{
 					player.damage(projectile.getHitPoint());
 				}
+				if (player.isBlocking())
+				{
+					player.damage(3);
+				}
+
 				projectile.destroy();
 			}
 
@@ -307,21 +393,47 @@ namespace GEX
 
 				if (_characterOne->isStateAttack())
 				{
-					if (_characterTwo->isBlocking())
+					if (_characterOne->isMovingRight() && _characterTwo->getPosition().x > _characterOne->getPosition().x)
 					{
-						playerTwo.damage(0.15);
+						if (_characterTwo->isBlocking())
+						{
+							playerTwo.damage(0.15);
+						}
+						else
+							playerTwo.damage(playerOne.getAttackDamage());
 					}
-					else
-						playerTwo.damage(playerOne.getAttackDamage());
+					if (_characterOne->isMovingLeft() && _characterTwo->getPosition().x < _characterOne->getPosition().x)
+					{
+						if (_characterTwo->isBlocking())
+						{
+							playerTwo.damage(0.15);
+						}
+						else
+							playerTwo.damage(playerOne.getAttackDamage());
+					}
 				}
+				///////////////////////////////////
 				if (_characterTwo->isStateAttack())
 				{
-					if (_characterOne->isBlocking())
+					if (_characterTwo->isMovingRight() && _characterOne->getPosition().x > _characterTwo->getPosition().x)
 					{
-						playerOne.damage(0.15);
+						if (_characterOne->isBlocking())
+						{
+							playerOne.damage(0.15);
+						}
+						else
+							playerOne.damage(playerTwo.getAttackDamage());
 					}
-					else
-						playerOne.damage(playerTwo.getAttackDamage());
+
+					if (_characterTwo->isMovingLeft() && _characterOne->getPosition().x < _characterTwo->getPosition().x)
+					{
+						if (_characterOne->isBlocking())
+						{
+							playerOne.damage(0.15);
+						}
+						else
+							playerOne.damage(playerTwo.getAttackDamage());
+					}
 				}
 				
 			}

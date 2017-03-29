@@ -35,19 +35,6 @@ namespace GEX
 
 	class World
 	{
-	private:
-		/*struct SpawnPoint
-		{
-			SpawnPoint(Airplaine::Type type, float _x, float _y) :
-				type(type),
-				x(_x),
-				y(_y)
-			{}
-			Airplaine::Type					type;
-			float							x;
-			float							y;
-		};*/
-
 	public:
 		/// make non-copy
 		World(const World&) = delete;
@@ -63,6 +50,12 @@ namespace GEX
 		void								adapPlayerPositionFromTileLeft(int tileNumbe, Character* characterr);
 		void								adapPlayerPositionFromTileBottom(int tileNumber, Character* character);
 		CommandeQueue&						getCommandQueue();
+		int 								playerOneNumWin();
+		int									playerTwoNumWin();
+		int									numberOfRoundPLay();
+		bool								isRoundWin();
+		void								resetFight();
+
 
 
 	private:
@@ -97,6 +90,10 @@ namespace GEX
 		Character*								_characterTwo;
 		sf::FloatRect							_worldBounds;
 		sf::Sprite								_topIcon;
+		mutable sf::CircleShape					_roundWinShape;
+		int										_playerOneNumWin;
+		int										_playerTwoNumWin;
+											
 	};
 }
 

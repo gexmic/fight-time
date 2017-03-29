@@ -25,6 +25,6 @@ enum class StateID
 	Game,
 	Loading,
 	Pause,
-	Gex,
+	Round,
 	GameOver
 };

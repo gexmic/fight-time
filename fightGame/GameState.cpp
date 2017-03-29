@@ -28,6 +28,7 @@ namespace GEX
 		
 	{
 		context.music->play(MusicID::DessertMusic);
+		context.player->setFightStatus(FightStatus::Fight);
 		
 	}
 
@@ -40,8 +41,37 @@ namespace GEX
 	{
 		_world.update(dt);
 		// ////////////////////////////
-		
+
+		/*_player.setFightStatus(FightStatus::PlayerOneWin);
+		requestStackPush(StateID::GameOver);*/
 		// ///////////////////////////
+		if (_world.isRoundWin())
+		{
+			if (_world.numberOfRoundPLay() == 1)
+			{
+				_player.setFightStatus(FightStatus::RoundTwo);
+				_world.resetFight();
+				requestStackPush(StateID::Round);
+			}
+			else if (_world.playerOneNumWin() == 2)
+			{
+				_player.setFightStatus(FightStatus::PlayerOneWin);
+				requestStackPush(StateID::GameOver);
+			}
+			else if (_world.playerTwoNumWin() == 2)
+			{
+				_player.setFightStatus(FightStatus::PlayerTwoWin);
+				requestStackPush(StateID::GameOver);
+			}
+			else
+			{
+				_player.setFightStatus(FightStatus::RoundThree);
+				_world.resetFight();
+				requestStackPush(StateID::Round);
+			}
+			
+
+		}
 		CommandeQueue& commands = _world.getCommandQueue();
 		_player.handleRealTimeInput(commands);
 
@@ -60,12 +90,7 @@ namespace GEX
 		{
 			requestStackPop();
 			requestStackPush(StateID::Menu);
-		}
-
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G)
-		{
-			requestStackPush(StateID::Gex);
-		}
+		}		
 		return true;
 	}
 }
