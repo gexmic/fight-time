@@ -17,7 +17,7 @@ namespace GEX
 	private:
 		sf::Text		_roundNumberText;
 		sf::Time		_elapsedTime;
-		int				_numberOfRoudPlay;
+		Context			_context;
 	};
 }
 

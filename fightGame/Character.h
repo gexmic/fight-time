@@ -61,6 +61,7 @@ namespace GEX
 		bool											isBlocking()const;
 		void											setState(State state);
 		int												getNumberofLost();
+		bool											roundFinished();
 		virtual bool									isMarkedForRemoval() const override;
 
 	private:
@@ -91,6 +92,7 @@ namespace GEX
 		bool											_isAttacking;
 		bool											_isRunningSoungPlay;
 		bool											_isRunningSoungStop;
+		bool											_isRoundFinich;
 		MusicPlayer										_musicRunning;
 		sf::Time										_fireCountdown;
 		Command											_fireCommand;

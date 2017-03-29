@@ -352,9 +352,16 @@ namespace GEX
 		_state = state;
 	}
 
+	
+
 	int Character::getNumberofLost()
 	{
 		return _roundLost;
+	}
+
+	bool Character::roundFinished()
+	{
+		return _isRoundFinich;
 	}
 
 	bool Character::isMarkedForRemoval() const
@@ -408,6 +415,17 @@ namespace GEX
 		{
 			_sprite.setTextureRect(_animations.at(_state)->update(dt));
 		}
+		else if (_state == State::Dead)
+		{
+			if (_animations[_state]->getNumberOfCurrentFrame() < _animations[_state]->getNumberOfFrames())
+				_sprite.setTextureRect(_animations.at(_state)->update(dt));
+			
+			if (_animations[_state]->getNumberOfCurrentFrame() == _animations[_state]->getNumberOfFrames() - 1)
+			{
+				_isRoundFinich = true; 
+				_roundLost = _roundLost + 1;
+			}
+		}
 
 		else if (this->getVelocity().y > GRAVITY)
 		{
@@ -423,7 +441,9 @@ namespace GEX
 
 	void Character::updateCurrent(sf::Time dt, CommandeQueue & commands)
 	{
+
 		sf::Vector2f velocity = getVelocity();
+		
 
 		if (_state == State::Jump)
 		{
@@ -437,7 +457,7 @@ namespace GEX
 		if (this->getHealth() <= 0)
 		{
 			_state = State::Dead;
-			_roundLost = _roundLost + 1;
+			
 		}
 
 

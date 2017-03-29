@@ -52,7 +52,9 @@ namespace GEX
 		CommandeQueue&						getCommandQueue();
 		int 								playerOneNumWin();
 		int									playerTwoNumWin();
+		int									numberOfRoundPLay();
 		bool								isRoundWin();
+		void								resetFight();
 
 
 
@@ -89,6 +91,8 @@ namespace GEX
 		sf::FloatRect							_worldBounds;
 		sf::Sprite								_topIcon;
 		mutable sf::CircleShape					_roundWinShape;
+		int										_playerOneNumWin;
+		int										_playerTwoNumWin;
 											
 	};
 }

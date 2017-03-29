@@ -102,7 +102,7 @@ namespace GEX
 			_roundWinShape.setPosition(tmp);
 			_roundWinShape.setFillColor(sf::Color::Transparent);
 			_window.draw(_roundWinShape);
-			for (int i = 0; i < playerOneNumWin(); ++i)
+			for (int i = 0; i < _playerOneNumWin; ++i)
 			{
 				sf::Vector2f tmp(380 - i * 30.f, 85.f);
 				_roundWinShape.setPosition(tmp);
@@ -120,7 +120,7 @@ namespace GEX
 			_roundWinShape.setFillColor(sf::Color::Transparent);
 			_window.draw(_roundWinShape);
 
-			for (int i = 0; i < playerTwoNumWin(); ++i)
+			for (int i = 0; i < _playerTwoNumWin; ++i)
 			{
 				sf::Vector2f tmp(860 + i * 30.f, 85.f);
 				_roundWinShape.setPosition(tmp);
@@ -219,17 +219,38 @@ namespace GEX
 
 	int World::playerOneNumWin()
 	{
-		return _characterTwo->getNumberofLost();
+		return _playerOneNumWin;
 	}
 
 	int World::playerTwoNumWin()
 	{
-		return _characterOne->getNumberofLost();
+		return _playerTwoNumWin;
+	}
+
+	int World::numberOfRoundPLay()
+	{
+		return _playerOneNumWin + _playerTwoNumWin;
 	}
 
 	bool World::isRoundWin()
-	{			
-		return _characterOne->getHealth() <= 0 || _characterTwo->getHealth() <= 0;
+	{		
+		if (_characterOne->roundFinished())
+		{
+			_playerTwoNumWin++;
+			return true;
+		}
+		if (_characterTwo->roundFinished())
+		{
+			_playerOneNumWin++;
+			return true;
+		}
+		else
+			return false;
+	}
+
+	void World::resetFight()
+	{
+		buildScene();
 	}
 
 	void World::buildScene()

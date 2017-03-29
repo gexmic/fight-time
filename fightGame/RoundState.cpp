@@ -12,7 +12,7 @@ namespace GEX
 		State(stack, context),
 		_roundNumberText(),
 		_elapsedTime(sf::Time::Zero),
-		_numberOfRoudPlay(0)
+		_context(context)
 	{
 		sf::Font& font = FontHolder::getInstance().get(FontID::Main);
 		sf::Vector2f windowSize = context.window->getView().getSize();
@@ -54,11 +54,15 @@ namespace GEX
 	{
 		// 3 secound countdwon timer
 		_elapsedTime += dt;
-		if (_elapsedTime > sf::seconds(2))
+		if (_context.player->getFightStatus() == FightStatus::RoundOne && _elapsedTime > sf::seconds(2))
 		{
-
+			requestStackPop();
 			requestStateClear();
 			requestStackPush(StateID::Game);
+		}
+		else if (_elapsedTime > sf::seconds(2))
+		{
+			requestStackPop();
 		}
 		return false;
 	}

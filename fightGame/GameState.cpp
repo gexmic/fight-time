@@ -47,9 +47,30 @@ namespace GEX
 		// ///////////////////////////
 		if (_world.isRoundWin())
 		{
-			_player.setFightStatus(FightStatus::RoundTwo);
-			requestStackPop();
-			requestStackPush(StateID::Round);
+			if (_world.numberOfRoundPLay() == 1)
+			{
+				_player.setFightStatus(FightStatus::RoundTwo);
+				_world.resetFight();
+				requestStackPush(StateID::Round);
+			}
+			else if (_world.playerOneNumWin() == 2)
+			{
+				_player.setFightStatus(FightStatus::PlayerOneWin);
+				requestStackPush(StateID::GameOver);
+			}
+			else if (_world.playerTwoNumWin() == 2)
+			{
+				_player.setFightStatus(FightStatus::PlayerTwoWin);
+				requestStackPush(StateID::GameOver);
+			}
+			else
+			{
+				_player.setFightStatus(FightStatus::RoundThree);
+				_world.resetFight();
+				requestStackPush(StateID::Round);
+			}
+			
+
 		}
 		CommandeQueue& commands = _world.getCommandQueue();
 		_player.handleRealTimeInput(commands);
