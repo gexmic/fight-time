@@ -1,0 +1,120 @@
+#include "CharacterSelectionState.h"
+#include "FontHolder.h"
+#include "Utility.h"
+
+
+
+namespace GEX
+{
+	CharacterSelectionState::CharacterSelectionState(StateStack & stack, Context context) :
+		State(stack, context),
+		_characters(),
+		_characterIndex(0)
+	{
+		sf::Font& font = FontHolder::getInstance().get(FontID::Main);
+
+		/*sf::RectangleShape anaRect;
+		anaRect.setSize(sf::Vector2f(100, 100));
+		anaRect.setFillColor(sf::Color::White);
+		anaRect.setPosition(600, 500);*/	
+
+		sf::Vector2f windowSize = context.window->getView().getSize();
+
+		_playerSelection.setFont(font);
+		_playerSelection.setString("Player One Select you Fighter");
+		centerOrigin(_playerSelection);
+		_playerSelection.scale(2, 2);
+		_playerSelection.setOutlineThickness(2);
+		_playerSelection.setOutlineColor(sf::Color::Red);
+		_playerSelection.setPosition(windowSize.x / 2, windowSize.y / 6);
+
+		sf::Sprite ana;
+		ana.setTexture(TextureHolder::getInstance().get(TextureID::Ana));
+		centerOrigin(ana);
+		ana.scale(0.35, 0.35);
+		ana.setPosition(windowSize.x / 3.f, windowSize.y / 2.75f);
+		_characters.push_back(ana);
+
+		sf::Sprite ninjaBoy;
+		ninjaBoy.setTexture(TextureHolder::getInstance().get(TextureID::NinjaBoy));
+		centerOrigin(ninjaBoy);
+		ninjaBoy.scale(0.38, 0.38);
+		ninjaBoy.setPosition(windowSize.x / 2.f, windowSize.y / 2.75f);
+		_characters.push_back(ninjaBoy);
+
+		sf::Sprite robot;
+		robot.setTexture(TextureHolder::getInstance().get(TextureID::Robot));
+		centerOrigin(robot);
+		robot.scale(0.35, 0.35);
+		robot.setPosition(windowSize.x  / 1.50, windowSize.y / 2.75f);
+		_characters.push_back(robot);
+
+		sf::Sprite knight;
+		knight.setTexture(TextureHolder::getInstance().get(TextureID::Knight));
+		centerOrigin(knight);
+		knight.scale(0.28, 0.25);
+		knight.setPosition(windowSize.x / 2.40, windowSize.y / 1.75f);
+		_characters.push_back(knight);
+
+		sf::Sprite ninjaGirl;
+		ninjaGirl.setTexture(TextureHolder::getInstance().get(TextureID::NinjaGirl));
+		centerOrigin(ninjaGirl);
+		ninjaGirl.scale(0.35, 0.35);
+		ninjaGirl.setPosition(windowSize.x / 1.75, windowSize.y / 1.75f);
+		_characters.push_back(ninjaGirl);
+
+
+
+
+	}
+	void CharacterSelectionState::draw()
+	{
+		sf::RenderWindow& window = *getContext().window;
+
+		window.setView(window.getDefaultView());
+
+		window.draw(_playerSelection);
+
+		for (const sf::Sprite& sprite : _characters)
+			window.draw(sprite);
+	}
+	bool CharacterSelectionState::update(sf::Time dt)
+	{
+		return false;
+	}
+	bool CharacterSelectionState::handleEvent(const sf::Event & event)
+	{
+		if (event.type != sf::Event::KeyPressed)
+			return false;
+
+		if (event.key.code == sf::Keyboard::Right)
+		{
+			if (_characterIndex > 0)
+				_characterIndex++;
+			else
+				_characterIndex = 0;
+			updateOptionText();
+		}
+
+		else if (event.key.code == sf::Keyboard::Left)
+		{
+			if (_characterIndex < _characters.size() - 1)
+				_characterIndex--;
+			else
+				_characterIndex = 0;
+
+			updateOptionText();
+			return false;
+		}
+	}
+	void CharacterSelectionState::updateOptionText()
+	{
+		if (_characters.empty())
+			return;
+
+		for (sf::Sprite& chatacter : _characters)
+			chatacter.setColor(sf::Color::White);
+
+		_characters[_characterIndex].setColor(sf::Color::Red);
+	}
+}

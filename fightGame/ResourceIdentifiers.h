@@ -33,7 +33,12 @@ namespace GEX
 		NinjaEntity,
 		NinjaGirlEntity,
 		Bullet,
-		FightTimeLogo
+		FightTimeLogo,
+		Ana,
+		NinjaBoy,
+		NinjaGirl,
+		Robot,
+		Knight
 		
 	};
 

@@ -26,5 +26,6 @@ enum class StateID
 	Loading,
 	Pause,
 	Round,
-	GameOver
+	GameOver,
+	CharacterSelection
 };

@@ -27,6 +27,7 @@ Application class
 #include "FontHolder.h"
 #include "TitleState.h"
 #include "GameOver.h"
+#include "CharacterSelectionState.h"
 #include "RoundState.h"
 
 
@@ -56,6 +57,11 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::NinjaEntity,           "../Media/Textures/NinjaMouvement.png");
 		TextureHolder::getInstance().load(TextureID::NinjaGirlEntity,		"../Media/Textures/NinjaGirlMouvement.png");
 		TextureHolder::getInstance().load(TextureID::FightTimeLogo,         "../Media/Textures/FightTimeLogo.png");
+		TextureHolder::getInstance().load(TextureID::Ana,					"../Media/Textures/ana.png");
+		TextureHolder::getInstance().load(TextureID::NinjaBoy,				"../Media/Textures/ninjaBoy.png");
+		TextureHolder::getInstance().load(TextureID::NinjaGirl,				"../Media/Textures/ninjaGirl.png");
+		TextureHolder::getInstance().load(TextureID::Robot,					"../Media/Textures/robot.png");
+		TextureHolder::getInstance().load(TextureID::Knight,				"../Media/Textures/knight.png");
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statsText.setPosition(5.f, 5.f);
@@ -140,12 +146,13 @@ namespace GEX
 
 	void Application::registerStates()
 	{
-		_stateStack.registerState<TitleState>			(StateID::Title);
-		_stateStack.registerState<MenuState>			(StateID::Menu);
-		_stateStack.registerState<GameState>			(StateID::Game);
-		_stateStack.registerState<PauseState>			(StateID::Pause);
-		_stateStack.registerState<GameOverState>		(StateID::GameOver);
-		_stateStack.registerState<RoundState>			(StateID::Round);
+		_stateStack.registerState<TitleState>				(StateID::Title);
+		_stateStack.registerState<MenuState>				(StateID::Menu);
+		_stateStack.registerState<GameState>				(StateID::Game);
+		_stateStack.registerState<PauseState>				(StateID::Pause);
+		_stateStack.registerState<GameOverState>			(StateID::GameOver);
+		_stateStack.registerState<RoundState>				(StateID::Round);
+		_stateStack.registerState<CharacterSelectionState>	(StateID::CharacterSelection);
 	}
 
 
