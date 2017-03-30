@@ -38,7 +38,10 @@ namespace GEX
 		NinjaBoy,
 		NinjaGirl,
 		Robot,
-		Knight
+		Knight,
+		RoundOne,
+		RoundTwo,
+		FinalRound
 		
 	};
 

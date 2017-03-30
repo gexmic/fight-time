@@ -15,7 +15,7 @@ namespace GEX
 		virtual bool	handleEvent(const sf::Event& event) override;
 
 	private:
-		sf::Text		_roundNumberText;
+		sf::Sprite	    _round;
 		sf::Time		_elapsedTime;
 		Context			_context;
 	};

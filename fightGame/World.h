@@ -41,7 +41,7 @@ namespace GEX
 		World&								operator=(const World&) = delete;
 
 		/// constructor						
-		explicit							World(sf::RenderWindow& target, SoundPlayer& soundPlayer);
+		explicit							World(sf::RenderWindow& target, SoundPlayer& soundPlayer, Character::Type& playerOneType, Character::Type& playerTwoType );
 
 		void								update(sf::Time deltaTime);
 		void								draw();
@@ -93,6 +93,8 @@ namespace GEX
 		mutable sf::CircleShape					_roundWinShape;
 		int										_playerOneNumWin;
 		int										_playerTwoNumWin;
+		Character::Type							_playerOneType;
+		Character::Type							_playerTwoType;
 											
 	};
 }

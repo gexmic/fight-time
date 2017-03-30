@@ -19,12 +19,27 @@ namespace GEX
 
 		void						updateOptionText();
 
+	private:
+		enum CharacterSelectedName
+		{
+			Ana,
+			NinjaBoy,
+			Robot,
+			Knight,
+			NinjaGirl
+		};
+
 
 	private:
 		sf::Sprite					_backgroundSprite;
 		sf::Text					_playerSelection;
-
-		std::vector<sf::Sprite>		_characters;
+		sf::Text					_pressEnterToSelect;
+		sf::Text					_pressEscToGoBack;
+		bool						_isPlayerOneAsSelectCharacter;
+		int							_playerOneCharaterIndex;
+		Context						_context;
+		std::vector<sf::Text>		_texts;
+ 		std::vector<sf::Sprite>		_characters;
 		std::size_t					_characterIndex;
 
 	};

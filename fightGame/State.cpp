@@ -19,6 +19,7 @@ State class
 #include "StateStack.h"
 #include "MusicPlayer.h"
 #include "SoundPlayer.h"
+#include "Character.h"
 
 
 
@@ -26,11 +27,13 @@ namespace GEX
 {
 
 	State::Context::Context(sf::RenderWindow& window, PlayerControl& player,
-							MusicPlayer& music, SoundPlayer& soundEffects) :
+		MusicPlayer& music, SoundPlayer& soundEffects, Character::Type& playerOne, Character::Type& playerTwo) :
 		window(&window),
 		player(&player),
 		music(&music),
-		soundEffects(&soundEffects)
+		soundEffects(&soundEffects),
+		playerOneCharacter(&playerOne),
+		playerTwoCharacter(&playerTwo)
 	{}
 
 

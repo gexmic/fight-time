@@ -51,6 +51,8 @@ namespace GEX
 		PlayerControl           _player;		
 		MusicPlayer				_music;
 		SoundPlayer				_soundPlayer;
+		Character::Type			_playerOne;
+		Character::Type			_playerTwo;
 
 
 		StateStack              _stateStack;

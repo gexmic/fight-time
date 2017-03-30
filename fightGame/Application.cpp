@@ -39,7 +39,7 @@ namespace GEX
 	Application::Application() :
 		_window(sf::VideoMode(1280, 960), "States", sf::Style::Close),
 		_player(),
-		_stateStack(State::Context(_window, _player, _music, _soundPlayer)),
+		_stateStack(State::Context(_window, _player, _music, _soundPlayer, _playerOne, _playerTwo)),
 		_statsText()
 	{
 		_window.setKeyRepeatEnabled(false);
@@ -62,6 +62,9 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::NinjaGirl,				"../Media/Textures/ninjaGirl.png");
 		TextureHolder::getInstance().load(TextureID::Robot,					"../Media/Textures/robot.png");
 		TextureHolder::getInstance().load(TextureID::Knight,				"../Media/Textures/knight.png");
+		TextureHolder::getInstance().load(TextureID::RoundOne,				"../Media/Textures/roundOne.jpg");
+		TextureHolder::getInstance().load(TextureID::RoundTwo,				"../Media/Textures/roundTwo.jpg");
+		TextureHolder::getInstance().load(TextureID::FinalRound,			"../Media/Textures/finalRound.jpg");
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statsText.setPosition(5.f, 5.f);

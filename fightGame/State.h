@@ -3,6 +3,7 @@
 #include "SFML/Window/Event.hpp"
 #include <memory>
 #include "StateIdentifiers.h"
+#include "Character.h"
 
 namespace sf
 {
@@ -15,6 +16,7 @@ namespace GEX
 	class PlayerControl;
 	class MusicPlayer;
 	class SoundPlayer;
+	class Character;
 
 
 	class State
@@ -25,12 +27,15 @@ namespace GEX
 		struct Context
 		{
 			Context(sf::RenderWindow& window, PlayerControl& player,
-				MusicPlayer& music, SoundPlayer& soundEffect);
+				MusicPlayer& music, SoundPlayer& soundEffect, Character::Type& playerOne, Character::Type& playerTwo);
 
 			sf::RenderWindow*   window;
 			PlayerControl*      player;
 			MusicPlayer*		music;
 			SoundPlayer*		soundEffects;
+			Character::Type*	playerOneCharacter;
+			Character::Type*    playerTwoCharacter;
+ 
 		};
 
 

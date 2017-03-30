@@ -39,7 +39,7 @@ namespace GEX
 	const int NUM_ROW = 10;
 	const int NUM_COL = 10;
 
-	World::World(sf::RenderWindow& window, SoundPlayer& soundPlayer) :
+	World::World(sf::RenderWindow& window, SoundPlayer& soundPlayer, Character::Type& playerOneType, Character::Type& playerTwoType) :
 		_window(window),
 		_worldView(window.getDefaultView()),
 		_soundPlayer(soundPlayer),
@@ -47,7 +47,9 @@ namespace GEX
 		_sceneLayers(),
 		_commandQueue(),
 		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f),
-		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo))
+		_topIcon(TextureHolder::getInstance().get(TextureID::FightTimeLogo)),
+		_playerOneType(playerOneType),
+		_playerTwoType(playerTwoType)
 		
 
 
@@ -282,12 +284,12 @@ namespace GEX
 
 
 		// add player to the world
-		std::unique_ptr<Character> playerOne(new Character(_characterOne->Ana, Category::Type::PlayerCharacterOne));
+		std::unique_ptr<Character> playerOne(new Character(_playerOneType, Category::Type::PlayerCharacterOne));
 		_characterOne = playerOne.get();
 		_characterOne->setPosition(300, 300);
 		_sceneLayers[Ground]->attachChild(std::move(playerOne));
 
-		std::unique_ptr<Character> playerTwo(new Character(_characterTwo->Azerty, Category::Type::PlayerCharacterTwo));
+		std::unique_ptr<Character> playerTwo(new Character(_playerTwoType, Category::Type::PlayerCharacterTwo));
 		_characterTwo = playerTwo.get();
 		_characterTwo->setPosition(800, 300);
 		_characterTwo->setScale({ -1, 1 });
