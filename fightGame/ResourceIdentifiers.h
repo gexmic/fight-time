@@ -25,7 +25,7 @@ namespace GEX
 		MapDessertObject,
 		MapDessertBackground,
 		TitleScreen,
-		MenuScreen,		
+		MenuScreen,
 		Particale,
 		AnaEntity,
 		RobotEntity,
@@ -33,7 +33,17 @@ namespace GEX
 		NinjaEntity,
 		NinjaGirlEntity,
 		Bullet,
-		FightTimeLogo
+		RobotBullet,
+		NinjaBullet,
+		FightTimeLogo,
+		Ana,
+		NinjaBoy,
+		NinjaGirl,
+		Robot,
+		Knight,
+		RoundOne,
+		RoundTwo,
+		FinalRound
 		
 	};
 
@@ -46,6 +56,9 @@ namespace GEX
 		AnaGunFire,
 		AnaJump,
 		Run,
-		AnaSword
+		AnaSword,
+		RobotRun,
+		RobotGunShot,
+		NinjaKniveShot
 	};
 }

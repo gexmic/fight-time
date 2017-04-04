@@ -23,7 +23,7 @@ namespace GEX
 
 	GameState::GameState(StateStack & stack, Context context) :
 		State(stack, context),
-		_world(*context.window, *context.soundEffects),
+		_world(*context.window, *context.soundEffects, *context.playerOneCharacter, *context.playerTwoCharacter),
 		_player(*context.player)
 		
 	{

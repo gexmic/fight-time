@@ -41,7 +41,7 @@ namespace GEX
 	{
 		if (this->getCategory() & Category::SoundEffet)
 		{
-			std::cout << "Category SoundEffects " << std::endl;
+			std::cout << "SoundEffects start " << std::endl;
 			_soundPlayer.playLoop(sound, position);
 		}
 	}
@@ -50,7 +50,7 @@ namespace GEX
 	{
 		if (this->getCategory() & Category::SoundEffet)
 		{
-			std::cout << "Category SoundEffects " << std::endl;
+			std::cout << "SoundEffects stop " << std::endl;
 			_soundPlayer.stop(sound);
 		}
 	}

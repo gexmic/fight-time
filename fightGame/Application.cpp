@@ -27,6 +27,7 @@ Application class
 #include "FontHolder.h"
 #include "TitleState.h"
 #include "GameOver.h"
+#include "CharacterSelectionState.h"
 #include "RoundState.h"
 
 
@@ -38,7 +39,7 @@ namespace GEX
 	Application::Application() :
 		_window(sf::VideoMode(1280, 960), "States", sf::Style::Close),
 		_player(),
-		_stateStack(State::Context(_window, _player, _music, _soundPlayer)),
+		_stateStack(State::Context(_window, _player, _music, _soundPlayer, _playerOne, _playerTwo)),
 		_statsText()
 	{
 		_window.setKeyRepeatEnabled(false);
@@ -56,6 +57,16 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::NinjaEntity,           "../Media/Textures/NinjaMouvement.png");
 		TextureHolder::getInstance().load(TextureID::NinjaGirlEntity,		"../Media/Textures/NinjaGirlMouvement.png");
 		TextureHolder::getInstance().load(TextureID::FightTimeLogo,         "../Media/Textures/FightTimeLogo.png");
+		TextureHolder::getInstance().load(TextureID::Ana,					"../Media/Textures/ana.png");
+		TextureHolder::getInstance().load(TextureID::NinjaBoy,				"../Media/Textures/ninjaBoy.png");
+		TextureHolder::getInstance().load(TextureID::NinjaGirl,				"../Media/Textures/ninjaGirl.png");
+		TextureHolder::getInstance().load(TextureID::Robot,					"../Media/Textures/robot.png");
+		TextureHolder::getInstance().load(TextureID::Knight,				"../Media/Textures/knight.png");
+		TextureHolder::getInstance().load(TextureID::RoundOne,				"../Media/Textures/roundOne.jpg");
+		TextureHolder::getInstance().load(TextureID::RoundTwo,				"../Media/Textures/roundTwo.jpg");
+		TextureHolder::getInstance().load(TextureID::FinalRound,			"../Media/Textures/finalRound.jpg");
+		TextureHolder::getInstance().load(TextureID::RobotBullet,			"../Media/Textures/robotBulet.png");
+		TextureHolder::getInstance().load(TextureID::NinjaBullet,			"../Media/Textures/ninjaBullet.png");
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statsText.setPosition(5.f, 5.f);
@@ -140,12 +151,13 @@ namespace GEX
 
 	void Application::registerStates()
 	{
-		_stateStack.registerState<TitleState>			(StateID::Title);
-		_stateStack.registerState<MenuState>			(StateID::Menu);
-		_stateStack.registerState<GameState>			(StateID::Game);
-		_stateStack.registerState<PauseState>			(StateID::Pause);
-		_stateStack.registerState<GameOverState>		(StateID::GameOver);
-		_stateStack.registerState<RoundState>			(StateID::Round);
+		_stateStack.registerState<TitleState>				(StateID::Title);
+		_stateStack.registerState<MenuState>				(StateID::Menu);
+		_stateStack.registerState<GameState>				(StateID::Game);
+		_stateStack.registerState<PauseState>				(StateID::Pause);
+		_stateStack.registerState<GameOverState>			(StateID::GameOver);
+		_stateStack.registerState<RoundState>				(StateID::Round);
+		_stateStack.registerState<CharacterSelectionState>	(StateID::CharacterSelection);
 	}
 
 

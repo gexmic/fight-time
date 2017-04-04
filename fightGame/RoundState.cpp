@@ -1,8 +1,6 @@
 #include "RoundState.h"
-#include "FontHolder.h"
 #include "Utility.h"
 #include "PlayerControl.h"
-
 #include "TextureHolder.h"
 
 
@@ -10,31 +8,25 @@ namespace GEX
 {
 	RoundState::RoundState(StateStack & stack, Context context) :
 		State(stack, context),
-		_roundNumberText(),
 		_elapsedTime(sf::Time::Zero),
 		_context(context)
 	{
-		sf::Font& font = FontHolder::getInstance().get(FontID::Main);
 		sf::Vector2f windowSize = context.window->getView().getSize();
 
-		_roundNumberText.setFont(font);
 		
 		if (context.player->getFightStatus() == FightStatus::RoundOne)
 		{
-			_roundNumberText.setString("Round One Fight");
+			_round.setTexture(TextureHolder::getInstance().get(TextureID::RoundOne));
 		}
 		if (context.player->getFightStatus() == FightStatus::RoundTwo)
 		{
-			_roundNumberText.setString("Round Two Fight");
+			_round.setTexture(TextureHolder::getInstance().get(TextureID::RoundTwo));
 		}
 		if (context.player->getFightStatus() == FightStatus::RoundThree)
 		{
-			_roundNumberText.setString("Last Round Fight");
+			_round.setTexture(TextureHolder::getInstance().get(TextureID::FinalRound));
 		}
 
-		_roundNumberText.setCharacterSize(100);
-		centerOrigin(_roundNumberText);
-		_roundNumberText.setPosition(0.5f * windowSize.x, 0.5f * windowSize.y);
 
 	}
 
@@ -42,13 +34,8 @@ namespace GEX
 	{
 		sf::RenderWindow& window = *getContext().window;
 		window.setView(window.getDefaultView());
-
-		sf::RectangleShape backgroudShape;
-		backgroudShape.setFillColor(sf::Color(100, 0, 0, 150));
-		backgroudShape.setSize(window.getView().getSize());
-
-		window.draw(backgroudShape);
-		window.draw(_roundNumberText);
+		
+		window.draw(_round);
 	}
 	bool RoundState::update(sf::Time dt)
 	{

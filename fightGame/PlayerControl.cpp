@@ -133,12 +133,6 @@ namespace GEX
 
 	void PlayerControl::initializaKeyBindings()
 	{
-		//_keyBindings[sf::Joystick::X] = Action::MoveLeft;
-		//_keyBindings[sf::Joystick::Y] = Action::MoveUp;
-		/*_keyBindings[sf::Keyboard::Left]	= Action::MoveLeft;
-		_keyBindings[sf::Keyboard::Right]	= Action::MoveRight;
-		_keyBindings[sf::Keyboard::Up]		= Action::MoveUp;
-		_keyBindings[sf::Keyboard::Down]	= Action::MoveDown;*/
 	}
 
 	void PlayerControl::initializaActionBindings()
@@ -185,8 +179,6 @@ namespace GEX
 		switch (action)
 		{
 		case Action::Move:
-		case Action::MoveLeft:
-		case Action::MoveRight:
 		case Action::MoveIdel:
 			return true;			
 		default:

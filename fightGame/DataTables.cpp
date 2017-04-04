@@ -35,6 +35,9 @@ namespace GEX
 		data[Character::Type::Ana].fireInterval = sf::seconds(1);
 		data[Character::Type::Ana].texture = TextureID::AnaEntity;
 		data[Character::Type::Ana].location = sf::IntRect(766, 154, 160, 136);
+		data[Character::Type::Ana].soundEffectRun = SoundEffectID::Run;
+		data[Character::Type::Ana].soundEffectShot = SoundEffectID::AnaGunFire;
+
 
 		data[Character::Type::Azerty].health = 300;
 		data[Character::Type::Azerty].attackDamage = 1;
@@ -42,6 +45,8 @@ namespace GEX
 		data[Character::Type::Azerty].fireInterval = sf::seconds(1);
 		data[Character::Type::Azerty].texture = TextureID::RobotEntity;
 		data[Character::Type::Azerty].location = sf::IntRect(430, 133, 142, 139);
+		data[Character::Type::Azerty].soundEffectRun = SoundEffectID::RobotRun;
+		data[Character::Type::Azerty].soundEffectShot = SoundEffectID::RobotGunShot;
 
 		data[Character::Type::SirThomasWale].health = 300;
 		data[Character::Type::SirThomasWale].attackDamage = 25;
@@ -235,7 +240,11 @@ namespace GEX
 
 		data[Projectile::CharacterTypeBullet::RobotBullet].damege		= 10;
 		data[Projectile::CharacterTypeBullet::RobotBullet].speed		= 300.f;
-		data[Projectile::CharacterTypeBullet::RobotBullet].texture		= TextureID::Bullet;
+		data[Projectile::CharacterTypeBullet::RobotBullet].texture		= TextureID::RobotBullet;
+
+		data[Projectile::CharacterTypeBullet::NinjaBullet].damege = 10;
+		data[Projectile::CharacterTypeBullet::NinjaBullet].speed = 300.f;
+		data[Projectile::CharacterTypeBullet::NinjaBullet].texture = TextureID::NinjaBullet;
 
 		return data;
 	}

@@ -42,6 +42,8 @@ namespace GEX
 		}
 		if (context.player->getFightStatus() == FightStatus::PlayerTwoWin)
 			_gameOverText.setString("Player Two Win");
+
+		context.player->setFightStatus(FightStatus::RoundOne);
 		
 		_gameOverText.setCharacterSize(100);
 		centerOrigin(_gameOverText);

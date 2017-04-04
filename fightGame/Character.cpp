@@ -42,6 +42,8 @@ namespace GEX
 				this->createBullets(node);
 			if (_type == Type::Azerty)
 				this->createBullets(node);
+			if (_type == Type::Katoka || _type == Type::Fungi)
+				this->createBullets(node);
 		};
 
 		std::string caracter;
@@ -415,7 +417,7 @@ namespace GEX
 		{
 			_sprite.setTextureRect(_animations.at(_state)->update(dt));
 		}
-		else if (_state == State::Dead)
+		else if (_state == State::Dead )
 		{
 			if (_animations[_state]->getNumberOfCurrentFrame() < _animations[_state]->getNumberOfFrames())
 				_sprite.setTextureRect(_animations.at(_state)->update(dt));
@@ -454,7 +456,7 @@ namespace GEX
 			this->accelerate(velocity.x, GRAVITY);
 		}
 
-		if (this->getHealth() <= 0)
+		if (this->getHealth() <= 0 && _state != State::Jump)
 		{
 			_state = State::Dead;
 			
@@ -486,7 +488,7 @@ namespace GEX
 		if (_isFiring && _fireCountdown <= sf::Time::Zero)
 		{
 			commands.push(_fireCommand);
-			playLocalSound(commands, SoundEffectID::AnaGunFire);
+			playLocalSound(commands, table.at(_type).soundEffectShot);
 			_isFiring = false;
 			_fireCountdown += table.at(_type).fireInterval / (_fireRateLevel + 1.f);
 		}
@@ -577,7 +579,10 @@ namespace GEX
 		if (_moveRight)
 			projectile->setVelocity(velocity);
 		else if (_moveLeft)
+		{
+			projectile->scale(-1, 1);
 			projectile->setVelocity(-velocity);
+		}
 		node.attachChild(std::move(projectile));
 	}
 
@@ -585,6 +590,9 @@ namespace GEX
 	{
 		Projectile::Type type = isPayerOne() ? Projectile::Type::playerOneBullet : Projectile::Type::playerTwoBullet;
 
-		createProjectile(node, type, 40, -5);
+		if(_moveRight)
+			createProjectile(node, type, 40, -5);
+		else
+			createProjectile(node, type, 40, -5);
 	}
 }
