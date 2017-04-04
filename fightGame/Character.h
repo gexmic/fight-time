@@ -28,7 +28,7 @@ namespace GEX
 			Santa,
 			Jack
 		};
-		
+		// different state that the character could be in
 		enum  State{
 			Idle,
 			Jump,

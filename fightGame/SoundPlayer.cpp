@@ -43,10 +43,14 @@ namespace GEX
 
 	SoundPlayer::SoundPlayer()
 	{
-		SoundBufferHolder::getInstance().load(SoundEffectID::AnaGunFire,	"../Media/Sound/anaGunFire.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::AnaJump,       "../Media/Sound/anaJump.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::Run,           "../Media/Sound/run.wav");
-		SoundBufferHolder::getInstance().load(SoundEffectID::AnaSword,      "../Media/Sound/anaSword.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::AnaGunFire,		"../Media/Sound/anaGunFire.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::AnaJump,			"../Media/Sound/anaJump.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::Run,				"../Media/Sound/run.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::AnaSword,			"../Media/Sound/anaSword.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::RobotGunShot,		"../Media/Sound/robotGunShot.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::RobotRun,			"../Media/Sound/robotRun.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::NinjaKniveShot,	"../Media/Sound/ninjaKniveShot.wav");
+
 
 		// Listener points towards the screen (default in SFML)
 		sf::Listener::setDirection(0.f, 0.f, -1.f);
@@ -92,11 +96,14 @@ namespace GEX
 
 	void SoundPlayer::stop(SoundEffectID effectid)
 	{
-		sf::Sound soundEffect(SoundBufferHolder::getInstance().get(effectid));
+		/*sf::Sound soundEffect(SoundBufferHolder::getInstance().get(effectid));	
+
 		
 
+
 		sf::Sound& sound = _sounds.back();
-		sound.stop();
+		sound.stop();*/
+		_sounds.pop_front();
 	}
 
 	void SoundPlayer::removeStoppedSounds()

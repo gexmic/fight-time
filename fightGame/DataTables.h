@@ -24,6 +24,7 @@ this dataTable class have a table for the airplaine attributes wen a airplaine i
 #include "Character.h"
 #include "TileMap.h"
 
+
 namespace GEX
 {
 
@@ -44,6 +45,9 @@ namespace GEX
 		TextureID				texture;
 		sf::IntRect				location;
 		sf::Time				fireInterval;
+		SoundEffectID			soundEffectRun;
+		SoundEffectID			soundEffectShot;
+
 	};
 
 	struct ProjectileDate

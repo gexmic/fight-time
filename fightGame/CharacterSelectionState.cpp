@@ -11,7 +11,8 @@ namespace GEX
 		_characters(),
 		_characterIndex(0),
 		_playerOneCharaterIndex(NULL),
-		_context(context)
+		_context(context),
+		_isPlayerOneAsSelectCharacter(false)
 	{
 		sf::Font& font = FontHolder::getInstance().get(FontID::Main);
 		

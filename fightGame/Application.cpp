@@ -65,6 +65,8 @@ namespace GEX
 		TextureHolder::getInstance().load(TextureID::RoundOne,				"../Media/Textures/roundOne.jpg");
 		TextureHolder::getInstance().load(TextureID::RoundTwo,				"../Media/Textures/roundTwo.jpg");
 		TextureHolder::getInstance().load(TextureID::FinalRound,			"../Media/Textures/finalRound.jpg");
+		TextureHolder::getInstance().load(TextureID::RobotBullet,			"../Media/Textures/robotBulet.png");
+		TextureHolder::getInstance().load(TextureID::NinjaBullet,			"../Media/Textures/ninjaBullet.png");
 
 		_statsText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statsText.setPosition(5.f, 5.f);
