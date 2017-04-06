@@ -30,7 +30,8 @@ namespace GEX
 	GameOverState::GameOverState(StateStack& stack, Context context) :
 		State(stack, context),
 		_gameOverText(),
-		_elapsedTime(sf::Time::Zero)
+		_elapsedTime(sf::Time::Zero),
+		_context(context)
 	{
 		sf::Font& font = FontHolder::getInstance().get(FontID::Main);
 		sf::Vector2f windowSize = context.window->getView().getSize();
@@ -39,9 +40,13 @@ namespace GEX
 		if (context.player->getFightStatus() == FightStatus::PlayerOneWin)
 		{
 			_gameOverText.setString("PLayer One Win");
+			context.music->play(MusicID::PlayerOneWin);
 		}
 		if (context.player->getFightStatus() == FightStatus::PlayerTwoWin)
+		{
 			_gameOverText.setString("Player Two Win");
+			context.music->play(MusicID::PlayerTwoWin);
+		}
 
 		context.player->setFightStatus(FightStatus::RoundOne);
 		
@@ -71,8 +76,10 @@ namespace GEX
 		_elapsedTime += dt;
 		if (_elapsedTime > sf::seconds(3))
 		{
+			_context.music->stop();
 			requestStateClear();
 			requestStackPush(StateID::Menu);
+			
 		}
 		return false;
 	}

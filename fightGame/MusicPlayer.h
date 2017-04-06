@@ -10,7 +10,11 @@ namespace GEX
 	{
 		MenuTheme,
 		DessertMusic,
-		AnaRun
+		RoundOne,
+		RoundTwo,
+		FinalRound,
+		PlayerOneWin,
+		PlayerTwoWin
 	};
 	class MusicPlayer
 	{

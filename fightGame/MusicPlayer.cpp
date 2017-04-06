@@ -11,7 +11,11 @@ namespace GEX
 	{
 		_filenames[MusicID::MenuTheme]		= "../Media/Music/MenuTheme.wav";
 		_filenames[MusicID::DessertMusic]	= "../Media/Music/dessert.ogg";
-		_filenames[MusicID::AnaRun]			= "../Media/Music/run.wav";
+		_filenames[MusicID::RoundOne]		= "../Media/Music/roundOne.wav";
+		_filenames[MusicID::RoundTwo]		= "../Media/Music/roundTwo.wav";
+		_filenames[MusicID::FinalRound]		= "../Media/Music/finalRound.wav";
+		_filenames[MusicID::PlayerOneWin]	= "../Media/Music/playerOneWin.wav";
+		_filenames[MusicID::PlayerTwoWin]	= "../Media/Music/playerTwoWin.wav";
 	}
 
 	void MusicPlayer::play(MusicID theme)

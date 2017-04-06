@@ -40,11 +40,7 @@ namespace GEX
 	bool GameState::update(sf::Time dt)
 	{
 		_world.update(dt);
-		// ////////////////////////////
-
-		/*_player.setFightStatus(FightStatus::PlayerOneWin);
-		requestStackPush(StateID::GameOver);*/
-		// ///////////////////////////
+		
 		if (_world.isRoundWin())
 		{
 			if (_world.numberOfRoundPLay() == 1)

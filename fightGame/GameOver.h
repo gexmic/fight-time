@@ -40,5 +40,6 @@ namespace GEX
 
 		sf::Text            _gameOverText;
 		sf::Time			_elapsedTime;		
+		Context				_context;
 	};
 }

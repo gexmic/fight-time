@@ -60,6 +60,9 @@ namespace GEX
 		RobotRun,
 		RobotGunShot,
 		RobotBlade,
-		NinjaKniveShot
+		NinjaKniveShot,
+		RoundOne,
+		RoundTwo,
+		FinalRound
 	};
 }

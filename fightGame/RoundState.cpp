@@ -3,6 +3,7 @@
 #include "PlayerControl.h"
 #include "TextureHolder.h"
 
+const int TIME_BETWEEN_ROUND = 2800;
 
 namespace GEX
 {
@@ -17,14 +18,17 @@ namespace GEX
 		if (context.player->getFightStatus() == FightStatus::RoundOne)
 		{
 			_round.setTexture(TextureHolder::getInstance().get(TextureID::RoundOne));
+			context.music->play(MusicID::RoundOne);
 		}
 		if (context.player->getFightStatus() == FightStatus::RoundTwo)
 		{
 			_round.setTexture(TextureHolder::getInstance().get(TextureID::RoundTwo));
+			context.music->play(MusicID::RoundTwo);
 		}
 		if (context.player->getFightStatus() == FightStatus::RoundThree)
 		{
 			_round.setTexture(TextureHolder::getInstance().get(TextureID::FinalRound));
+			context.music->play(MusicID::FinalRound);
 		}
 
 
@@ -41,14 +45,16 @@ namespace GEX
 	{
 		// 3 secound countdwon timer
 		_elapsedTime += dt;
-		if (_context.player->getFightStatus() == FightStatus::RoundOne && _elapsedTime > sf::seconds(2))
+		if (_context.player->getFightStatus() == FightStatus::RoundOne && _elapsedTime > sf::milliseconds(TIME_BETWEEN_ROUND))
 		{
+			_context.music->stop();
 			requestStackPop();
 			requestStateClear();
 			requestStackPush(StateID::Game);
 		}
-		else if (_elapsedTime > sf::seconds(2))
+		else if (_elapsedTime > sf::milliseconds(TIME_BETWEEN_ROUND))
 		{
+			_context.music->stop();
 			requestStackPop();
 		}
 		return false;
