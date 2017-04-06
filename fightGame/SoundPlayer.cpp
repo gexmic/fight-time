@@ -50,6 +50,8 @@ namespace GEX
 		SoundBufferHolder::getInstance().load(SoundEffectID::RobotGunShot,		"../Media/Sound/robotGunShot.wav");
 		SoundBufferHolder::getInstance().load(SoundEffectID::RobotRun,			"../Media/Sound/robotRun.wav");
 		SoundBufferHolder::getInstance().load(SoundEffectID::NinjaKniveShot,	"../Media/Sound/ninjaKniveShot.wav");
+		SoundBufferHolder::getInstance().load(SoundEffectID::RobotBlade,        "../Media/Sound/robotBlade.wav");
+		
 
 
 		// Listener points towards the screen (default in SFML)

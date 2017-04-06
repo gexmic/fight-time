@@ -30,7 +30,8 @@ namespace GEX
 		_category(category),
 		_isRunningSoungPlay(false),
 		_isRunningSoungStop(false),
-		_isAttacking(false)
+		_isAttacking(false),
+		_timeBetweenStep(sf::Time::Zero)
 
 	{
 		centerOrigin(_sprite);
@@ -259,6 +260,7 @@ namespace GEX
 			{
 				this->setVelocity(x, this->getVelocity().y);
 				_state = State::Idle;
+				_timeBetweenStep = sf::Time::Zero;
 				_isRunningSoungStop = true;
 			}
 		}
@@ -269,7 +271,7 @@ namespace GEX
 
 	void Character::fire()
 	{
-		if (_state != State::Dead)
+		if (_state != State::Dead && _type != Character::Type::SirThomasWale)
 		{
 			if (_state == State::Idle || _state == State::Run)
 			{
@@ -464,7 +466,7 @@ namespace GEX
 
 
 		movementUpdate(dt);
-		checkRunning(commands);
+		checkRunning(dt, commands);
 		checkProjectileLaunch(dt, commands);
 		checkAttack(commands);
 		checkJumping(commands);
@@ -509,30 +511,42 @@ namespace GEX
 		}
 	}
 
-	void Character::checkRunning(CommandeQueue & commands)
+	void Character::checkRunning(sf::Time dt, CommandeQueue & commands)
 	{
-		if (_state == State::Run)
+		if (_state == State::Run )
 		{
-			if (_isRunningSoungPlay == false)
+			//if (_isRunningSoungPlay == false)
+			//{
+			if (_timeBetweenStep <= sf::Time::Zero)
 			{
-				playLocalSoundRunning(commands, SoundEffectID::Run);
+				playLocalSoundRunning(commands, table.at(_type).soundEffectRun);
 				_isRunningSoungPlay = true;
 			}
+			
+			if (_timeBetweenStep >= sf::milliseconds(420))
+				_timeBetweenStep = sf::Time::Zero;
+			else
+				_timeBetweenStep += dt;
+			
+				
+			//}
 		}
 
-		if (_isRunningSoungStop == true && _isRunningSoungPlay == true)
+		
+
+		/*if (_isRunningSoungStop == true && _isRunningSoungPlay == true)
 		{
-			stopLocalSoundRunning(commands, SoundEffectID::Run);
+			stopLocalSoundRunning(commands, table.at(_type).soundEffectRun);
 			_isRunningSoungPlay = false;
 			_isRunningSoungStop = false;
-		}
+		}*/
 	}
 
 	void Character::checkAttack(CommandeQueue & commands)
 	{
 		if (_isAttacking)
 		{
-			playLocalSound(commands, SoundEffectID::AnaSword);
+			playLocalSound(commands, table.at(_type).soundEffectAttack);
 			_isAttacking = false;
 		}
 	}
@@ -554,7 +568,7 @@ namespace GEX
 		Command command;
 		command.category = Category::SoundEffet;
 		command.action = derivedAction<SoundNode>([effect, worldPosition](SoundNode& node, sf::Time)
-		{node.playSoundLoop(effect, worldPosition); });
+		{node.playSound(effect, worldPosition); });
 		commands.push(command);
 	}
 	void Character::stopLocalSoundRunning(CommandeQueue & commands, SoundEffectID effect)

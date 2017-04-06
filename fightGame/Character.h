@@ -72,7 +72,7 @@ namespace GEX
 		void											calculateHealth()const ;
 		void											checkProjectileLaunch(sf::Time dt, CommandeQueue& commands);
 		void											checkJumping(CommandeQueue& commands);
-		void											checkRunning(CommandeQueue& commands);
+		void											checkRunning(sf::Time dt, CommandeQueue& commands);
 		void											checkAttack(CommandeQueue& commands);
 		void											playLocalSound(CommandeQueue & commands, SoundEffectID effect);
 		void											playLocalSoundRunning(CommandeQueue& commands, SoundEffectID effect);
@@ -102,6 +102,7 @@ namespace GEX
 		mutable sf::RectangleShape						_healthBarCurrentHealth;
 		Projectile::CharacterTypeBullet					_characterTypeBullet;
 		int												_roundLost;
+		sf::Time										_timeBetweenStep;
 
 		std::map<State, std::unique_ptr<Animation>>		_animations;
 	};

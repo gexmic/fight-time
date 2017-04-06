@@ -21,7 +21,7 @@ namespace GEX
 
 
 		_playerSelection.setFont(font);
-		_playerSelection.setString("Player One Select you Fighter");
+		_playerSelection.setString("Player One Select your Fighter");
 		centerOrigin(_playerSelection);
 		_playerSelection.scale(2, 2);
 		_playerSelection.setOutlineThickness(2);

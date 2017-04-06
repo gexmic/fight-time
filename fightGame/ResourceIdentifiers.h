@@ -59,6 +59,7 @@ namespace GEX
 		AnaSword,
 		RobotRun,
 		RobotGunShot,
+		RobotBlade,
 		NinjaKniveShot
 	};
 }

@@ -47,6 +47,7 @@ namespace GEX
 		sf::Time				fireInterval;
 		SoundEffectID			soundEffectRun;
 		SoundEffectID			soundEffectShot;
+		SoundEffectID			soundEffectAttack;
 
 	};
 

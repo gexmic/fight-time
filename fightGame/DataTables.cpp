@@ -37,6 +37,7 @@ namespace GEX
 		data[Character::Type::Ana].location = sf::IntRect(766, 154, 160, 136);
 		data[Character::Type::Ana].soundEffectRun = SoundEffectID::Run;
 		data[Character::Type::Ana].soundEffectShot = SoundEffectID::AnaGunFire;
+		data[Character::Type::Ana].soundEffectAttack = SoundEffectID::AnaSword;
 
 
 		data[Character::Type::Azerty].health = 300;
@@ -45,29 +46,41 @@ namespace GEX
 		data[Character::Type::Azerty].fireInterval = sf::seconds(1);
 		data[Character::Type::Azerty].texture = TextureID::RobotEntity;
 		data[Character::Type::Azerty].location = sf::IntRect(430, 133, 142, 139);
-		data[Character::Type::Azerty].soundEffectRun = SoundEffectID::RobotRun;
+		data[Character::Type::Azerty].soundEffectRun = SoundEffectID::Run;
 		data[Character::Type::Azerty].soundEffectShot = SoundEffectID::RobotGunShot;
+		data[Character::Type::Azerty].soundEffectAttack = SoundEffectID::RobotBlade;
 
 		data[Character::Type::SirThomasWale].health = 300;
-		data[Character::Type::SirThomasWale].attackDamage = 25;
+		data[Character::Type::SirThomasWale].attackDamage = 2;
 		data[Character::Type::SirThomasWale].speed = 150.f;
 		data[Character::Type::SirThomasWale].fireInterval = sf::seconds(1);
 		data[Character::Type::SirThomasWale].texture = TextureID::KnightEntity;
 		data[Character::Type::SirThomasWale].location = sf::IntRect(150, 1075, 147, 177);
+		data[Character::Type::SirThomasWale].soundEffectRun = SoundEffectID::Run;
+		data[Character::Type::SirThomasWale].soundEffectAttack = SoundEffectID::AnaSword;
 
 		data[Character::Type::Katoka].health = 300;
-		data[Character::Type::Katoka].attackDamage = 25;
+		data[Character::Type::Katoka].attackDamage = 1;
 		data[Character::Type::Katoka].speed = 150.f;
 		data[Character::Type::Katoka].fireInterval = sf::seconds(1);
 		data[Character::Type::Katoka].texture = TextureID::NinjaEntity;
 		data[Character::Type::Katoka].location = sf::IntRect(61, 181, 58, 110);
+		data[Character::Type::Katoka].soundEffectRun = SoundEffectID::Run;
+		data[Character::Type::Katoka].soundEffectAttack = SoundEffectID::AnaSword;
+		data[Character::Type::Katoka].soundEffectShot = SoundEffectID::NinjaKniveShot;
+
+
 
 		data[Character::Type::Fungi].health = 300;
-		data[Character::Type::Fungi].attackDamage = 25;
+		data[Character::Type::Fungi].attackDamage = 1;
 		data[Character::Type::Fungi].speed = 150.f;
 		data[Character::Type::Fungi].fireInterval = sf::seconds(1);
 		data[Character::Type::Fungi].texture = TextureID::NinjaGirlEntity;
 		data[Character::Type::Fungi].location = sf::IntRect(327, 205, 73, 125);
+		data[Character::Type::Fungi].soundEffectRun = SoundEffectID::Run;
+		data[Character::Type::Fungi].soundEffectAttack = SoundEffectID::AnaSword;
+		data[Character::Type::Fungi].soundEffectShot = SoundEffectID::NinjaKniveShot;
+		
 
 		return data;
 	}
@@ -235,16 +248,16 @@ namespace GEX
 		std::map<Projectile::CharacterTypeBullet, ProjectileDate> data;
 
 		data[Projectile::CharacterTypeBullet::AnaBullet].damege		= 10;
-		data[Projectile::CharacterTypeBullet::AnaBullet].speed		= 300.f;
+		data[Projectile::CharacterTypeBullet::AnaBullet].speed		= 800.f;
 		data[Projectile::CharacterTypeBullet::AnaBullet].texture	= TextureID::Bullet;
 
-		data[Projectile::CharacterTypeBullet::RobotBullet].damege		= 10;
-		data[Projectile::CharacterTypeBullet::RobotBullet].speed		= 300.f;
-		data[Projectile::CharacterTypeBullet::RobotBullet].texture		= TextureID::RobotBullet;
+		data[Projectile::CharacterTypeBullet::RobotBullet].damege	= 10;
+		data[Projectile::CharacterTypeBullet::RobotBullet].speed	= 550.f;
+		data[Projectile::CharacterTypeBullet::RobotBullet].texture	= TextureID::RobotBullet;
 
-		data[Projectile::CharacterTypeBullet::NinjaBullet].damege = 10;
-		data[Projectile::CharacterTypeBullet::NinjaBullet].speed = 300.f;
-		data[Projectile::CharacterTypeBullet::NinjaBullet].texture = TextureID::NinjaBullet;
+		data[Projectile::CharacterTypeBullet::NinjaBullet].damege	= 10;
+		data[Projectile::CharacterTypeBullet::NinjaBullet].speed	= 450.f;
+		data[Projectile::CharacterTypeBullet::NinjaBullet].texture	= TextureID::NinjaBullet;
 
 		return data;
 	}
